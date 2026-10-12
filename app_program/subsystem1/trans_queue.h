@@ -1,5 +1,5 @@
 /*
- * trans_queue.h  --  Buddy 1 (WiFi / communication / telemetry)
+ * trans_queue.h 
  * Offline telemetry queue: FR-COM-09 to FR-COM-12, NFR-RES-03.
  * Plain C, no kernel calls, so it can be tested on a PC.
  * Callers must serialise access with a mutex (NFR-MNT-02).

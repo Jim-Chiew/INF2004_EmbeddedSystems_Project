@@ -1,5 +1,5 @@
 /*
- * com_state.c  --  Buddy 1 (WiFi / communication / telemetry)
+ * com_state.c  
  * COM state machine. See com_state.h and the WiFi statechart (Section 6).
  */
 #include "com_state.h"

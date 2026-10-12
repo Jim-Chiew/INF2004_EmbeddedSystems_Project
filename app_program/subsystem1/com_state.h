@@ -1,5 +1,5 @@
 /*
- * com_state.h  --  Buddy 1 (WiFi / communication / telemetry)
+ * com_state.h  
  * COM state machine: COM_DISCONNECTED, COM_SYNC, COM_CONNECTED.
  * FR-COM-01, FR-COM-03, FR-COM-04. Plain C, no kernel or network calls.
  * Only one task calls com_update(); other tasks read the state through an
