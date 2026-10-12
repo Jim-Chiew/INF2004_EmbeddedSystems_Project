@@ -57,6 +57,20 @@ Test IDs never change and are never reused.
 | S1-U59 | state name with a quote is rejected | robustness | auto | `testing/subsystem1/test_telemetry.c` |
 | S1-U60 | empty state name is rejected | robustness | auto | `testing/subsystem1/test_telemetry.c` |
 | S1-U61 | state name without an end marker is rejected | robustness | auto | `testing/subsystem1/test_telemetry.c` |
+| S1-S01 | power-up with no link: COM_DISCONNECTED | FR-COM-03 | auto | `testing/subsystem1/test_scenario.c` |
+| S1-S02 | COM_DISCONNECTED: LED is blinking | FR-COM-06 | auto | `testing/subsystem1/test_scenario.c` |
+| S1-S03 | 3 samples while offline: stored, none sent | FR-COM-09 | auto | `testing/subsystem1/test_scenario.c` |
+| S1-S04 | link back with backlog: COM_SYNC | FR-COM-03 | auto | `testing/subsystem1/test_scenario.c` |
+| S1-S05 | COM_SYNC: LED stays on | FR-COM-05 | auto | `testing/subsystem1/test_scenario.c` |
+| S1-S06 | backlog drained: COM_CONNECTED, queue empty | FR-COM-04 | auto | `testing/subsystem1/test_scenario.c` |
+| S1-S07 | broker receives samples 1, 2, 3 in order | FR-COM-03, FR-COM-04 | auto | `testing/subsystem1/test_scenario.c` |
+| S1-S08 | link lost: back to COM_DISCONNECTED | FR-COM-01 | auto | `testing/subsystem1/test_scenario.c` |
+| S1-S09 | 105 offline samples: 100 kept, 5 discarded | FR-COM-09, FR-COM-10, FR-COM-11 | auto | `testing/subsystem1/test_scenario.c` |
+| S1-S10 | reconnect after overflow: COM_SYNC | FR-COM-03 | auto | `testing/subsystem1/test_scenario.c` |
+| S1-S11 | overflow backlog drained: COM_CONNECTED | FR-COM-04 | auto | `testing/subsystem1/test_scenario.c` |
+| S1-S12 | broker gets the newest 100, oldest 5 dropped | FR-COM-10 | auto | `testing/subsystem1/test_scenario.c` |
+| S1-S13 | broker order is increasing | FR-COM-04 | auto | `testing/subsystem1/test_scenario.c` |
+| S1-S14 | discard counter reset after full transmission | FR-COM-12 | auto | `testing/subsystem1/test_scenario.c` |
 
 *Method:* **auto** = a check in the test program, result printed on the console. *robustness* means the test protects against bad input and does not map to one requirement.
 
@@ -70,6 +84,7 @@ Add a new row for every run. Never edit or delete old rows.
 | 2026-10-12 | S1-U20 to S1-U34 | `ab73ddc` | Sarfaraz | PASS (15/15) | `logs/2026-10-12_com_state_unit.txt` | PC build, gcc, strict warnings |
 | 2026-10-12 | S1-U40 to S1-U46 | `c781c91` | Sarfaraz | PASS (7/7) | `logs/2026-10-12_status_led_unit.txt` | PC build, gcc, strict warnings |
 | 2026-10-12 | S1-U50 to S1-U61 | `eda6118` | Sarfaraz | PASS (12/12) | `logs/2026-10-12_telemetry_unit.txt` | PC build, gcc, strict warnings |
+| 2026-10-12 | S1-S01 to S1-S14 | `e6b75eb` | Sarfaraz | PASS (14/14) | `logs/2026-10-12_scenario.txt` | PC build, gcc, strict warnings, ASan/UBSan |
 
 ## Not yet tested
 
