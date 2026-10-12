@@ -1,0 +1,16 @@
+[TEST] S1-U20 PASS  starts in COM_DISCONNECTED at power-up
+[TEST] S1-U21 PASS  WiFi up but MQTT down: stays COM_DISCONNECTED
+[TEST] S1-U22 PASS  MQTT up but WiFi down: stays COM_DISCONNECTED
+[TEST] S1-U23 PASS  both up, queue not empty: COM_SYNC (FR-COM-03)
+[TEST] S1-U24 PASS  stays in COM_SYNC while queue has messages
+[TEST] S1-U25 PASS  queue becomes empty: COM_CONNECTED (FR-COM-04)
+[TEST] S1-U26 PASS  stays in COM_CONNECTED
+[TEST] S1-U27 PASS  WiFi lost in COM_CONNECTED: COM_DISCONNECTED (FR-COM-01)
+[TEST] S1-U28 PASS  both up, queue empty from DISCONNECTED: COM_CONNECTED (FR-COM-03)
+[TEST] S1-U29 PASS  MQTT lost in COM_CONNECTED: COM_DISCONNECTED (FR-COM-01)
+[TEST] S1-U30 PASS  WiFi lost in COM_SYNC: COM_DISCONNECTED (FR-COM-01)
+[TEST] S1-U31 PASS  MQTT lost in COM_SYNC: COM_DISCONNECTED (FR-COM-01)
+[TEST] S1-U32 PASS  reconnects with empty queue: COM_CONNECTED
+[TEST] S1-U33 PASS  NULL inputs change nothing
+[TEST] S1-U34 PASS  com_get_state() matches the last update
+ALL TESTS PASSED (0 failed)
