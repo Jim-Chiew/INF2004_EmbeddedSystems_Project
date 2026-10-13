@@ -1,0 +1,4 @@
+# Real WiFi details: never commit these.
+wifi_secrets.h
+# Build output
+build/
