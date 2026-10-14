@@ -1,7 +1,7 @@
 # Subsystem 5 — Adaptive ultrasonic scanning and obstacle profiling
 
 HC-SR04 ultrasonic sensor + SG90 servo, on the Raspberry Pi Pico W, running on
-micro T-Kernel 3.0 (SMP). Student ID: `<student ID>`.
+micro T-Kernel 3.0 (SMP).
 
 This folder holds everything for Buddy 5. No other subsystem needs to touch
 these files. Other subsystems only use the event flag in `subsystem5.h`.
