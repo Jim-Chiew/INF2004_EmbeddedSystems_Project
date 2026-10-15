@@ -50,3 +50,62 @@ target_link_libraries(buddy1_bench PRIVATE
 )
 
 pico_add_extra_outputs(buddy1_bench)
+
+# ---------------------------------------------------------------------------
+# Buddy 1: stage B bench test, joins WiFi (needs the lwIP network stack and
+# wifi_secrets.h + lwipopts.h from testing/subsystem1/bench/).
+# ---------------------------------------------------------------------------
+add_executable(buddy1_wifi
+    testing/subsystem1/bench/buddy1_wifi.c
+    ${S1_DIR}/com_state.c
+    ${S1_DIR}/status_led.c
+)
+
+target_include_directories(buddy1_wifi PRIVATE
+    ${S1_DIR}
+    ${CMAKE_CURRENT_LIST_DIR}/testing/subsystem1/bench
+)
+target_compile_options(buddy1_wifi PRIVATE -Wall -Wextra)
+
+pico_set_program_name(buddy1_wifi "buddy1_wifi")
+pico_set_program_version(buddy1_wifi "0.1")
+pico_enable_stdio_usb(buddy1_wifi 1)
+pico_enable_stdio_uart(buddy1_wifi 0)
+
+target_link_libraries(buddy1_wifi PRIVATE
+    pico_stdlib
+    pico_cyw43_arch_lwip_threadsafe_background
+)
+
+pico_add_extra_outputs(buddy1_wifi)
+
+
+# ---------------------------------------------------------------------------
+# Buddy 1: stage C bench test, WiFi + MQTT telemetry with the offline queue.
+# ---------------------------------------------------------------------------
+add_executable(buddy1_mqtt
+    testing/subsystem1/bench/buddy1_mqtt.c
+    ${S1_DIR}/com_state.c
+    ${S1_DIR}/status_led.c
+    ${S1_DIR}/telemetry.c
+    ${S1_DIR}/trans_queue.c
+)
+
+target_include_directories(buddy1_mqtt PRIVATE
+    ${S1_DIR}
+    ${CMAKE_CURRENT_LIST_DIR}/testing/subsystem1/bench
+)
+target_compile_options(buddy1_mqtt PRIVATE -Wall -Wextra)
+
+pico_set_program_name(buddy1_mqtt "buddy1_mqtt")
+pico_set_program_version(buddy1_mqtt "0.1")
+pico_enable_stdio_usb(buddy1_mqtt 1)
+pico_enable_stdio_uart(buddy1_mqtt 0)
+
+target_link_libraries(buddy1_mqtt PRIVATE
+    pico_stdlib
+    pico_cyw43_arch_lwip_threadsafe_background
+    pico_lwip_mqtt
+)
+
+pico_add_extra_outputs(buddy1_mqtt)
