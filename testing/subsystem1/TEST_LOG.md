@@ -71,7 +71,14 @@ Test IDs never change and are never reused.
 | S1-S12 | broker gets the newest 100, oldest 5 dropped | FR-COM-10 | auto | `testing/subsystem1/test_scenario.c` |
 | S1-S13 | broker order is increasing | FR-COM-04 | auto | `testing/subsystem1/test_scenario.c` |
 | S1-S14 | discard counter reset after full transmission | FR-COM-12 | auto | `testing/subsystem1/test_scenario.c` |
-
+| S1-H01 | Pico W joins WiFi and gets an IP | FR-COM-03 | manual (Pico W) | `testing/subsystem1/bench/buddy1_wifi.c` |
+| S1-H02 | MQTT connects and QoS1 publish is acked by the broker | FR-COM-03, FR-COM-04 | manual (Pico W) | `testing/subsystem1/bench/buddy1_mqtt.c` |
+| S1-H03 | broker down: queue grows, state COM_DISCONNECTED | FR-COM-01, FR-COM-09 | manual (Pico W) | `testing/subsystem1/bench/buddy1_mqtt.c` |
+| S1-H04 | broker back: queue drained in order of ack count, COM_CONNECTED, no drops | FR-COM-04, FR-COM-12 | manual (Pico W) | `testing/subsystem1/bench/buddy1_mqtt.c` |
+| S1-H05 | queue overflow drops oldest and counts them | FR-COM-10, FR-COM-11 | manual (Pico W) | `testing/subsystem1/bench/buddy1_mqtt.c` |
+| S1-H06 | MQTT retry every 5 s (measured 5002 ms) | FR-COM-02 | manual (Pico W) | `testing/subsystem1/bench/buddy1_mqtt.c` |
+| S1-H07 | LED solid ON when connected, blinking when broker stopped (by eye) | FR-COM-05, FR-COM-06 | manual (Pico W) | `testing/subsystem1/bench/buddy1_mqtt.c` |
+| S1-H08 | LED blink rate 2 Hz within 10% (59 blinks in 30 s = 1.97 Hz) | FR-COM-06 | manual (Pico W) | `testing/subsystem1/bench/buddy1_mqtt.c` |
 *Method:* **auto** = a check in the test program, result printed on the console. *robustness* means the test protects against bad input and does not map to one requirement.
 
 ## Results
@@ -85,9 +92,7 @@ Add a new row for every run. Never edit or delete old rows.
 | 2026-10-12 | S1-U40 to S1-U46 | `c781c91` | Sarfaraz | PASS (7/7) | `logs/2026-10-12_status_led_unit.txt` | PC build, gcc, strict warnings |
 | 2026-10-12 | S1-U50 to S1-U61 | `eda6118` | Sarfaraz | PASS (12/12) | `logs/2026-10-12_telemetry_unit.txt` | PC build, gcc, strict warnings |
 | 2026-10-12 | S1-S01 to S1-S14 | `e6b75eb` | Sarfaraz | PASS (14/14) | `logs/2026-10-12_scenario.txt` | PC build, gcc, strict warnings, ASan/UBSan |
+| 2026-10-15 | S1-H01 to S1-H06 | `TBD` | Sarfaraz | PASS (6/6) | `logs/2026-10-15_wifi_join.txt`, `logs/2026-10-15_mqtt_offline_reconnect.txt`, `logs/2026-10-15_mqtt_retry_5s.txt` | Pico W on phone hotspot, Mosquitto on laptop, no SSID/IP in logs |
 
 ## Not yet tested
-
-- FR-COM-01 (loss detected within 2 s) and FR-COM-02 (retry every 5 s): need the real WiFi and MQTT code on the Pico.
-- FR-COM-06 (2 Hz within +/-10%): the logic is tested here; the real timer accuracy needs a measurement on the Pico.
 - FR-COM-08 (START/STOP/RESET within 200 ms), NFR-PRF-05, NFR-REL-03, NFR-SEC-01/02, NFR-STD-02: need the full system on the Pico.

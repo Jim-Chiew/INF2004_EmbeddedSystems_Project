@@ -149,6 +149,7 @@ int main(void)
     bool last_level = false;
     uint32_t next_wifi_retry = RETRY_MS;
     uint32_t next_mqtt_try = 0;
+    uint32_t mqtt_attempt_since = 0;
     uint32_t next_sample = SAMPLE_MS;
     uint32_t acked = 0;
     int inflight = 0;
@@ -205,9 +206,23 @@ int main(void)
                        (unsigned long)now, (int)e);
                 if (e == ERR_OK) {
                     g_mqtt_connecting = 1;
+                    mqtt_attempt_since = now;
                 }
             }
             next_mqtt_try = now + RETRY_MS;
+        }
+                /* FR-COM-02: retry every 5 s. If an attempt has not finished after
+         * 5 s, cancel it so the next one can start (otherwise lwIP waits
+         * about 18 s for the TCP timeout). mqtt_disconnect() does not call
+         * the callback, so the flag is cleared here. */
+        if (g_mqtt_connecting && (now - mqtt_attempt_since) > RETRY_MS) {
+            cyw43_arch_lwip_begin();
+            mqtt_disconnect(client);
+            cyw43_arch_lwip_end();
+            g_mqtt_connecting = 0;
+            next_mqtt_try = now;
+            printf("[%6lu ms] MQTT attempt timed out, retrying\n",
+                   (unsigned long)now);
         }
         if (g_mqtt_status != last_mqtt_status) {
             printf("[%6lu ms] MQTT status: %d (0 = connected)\n",
