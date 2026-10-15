@@ -92,7 +92,7 @@ Add a new row for every run. Never edit or delete old rows.
 | 2026-10-12 | S1-U40 to S1-U46 | `c781c91` | Sarfaraz | PASS (7/7) | `logs/2026-10-12_status_led_unit.txt` | PC build, gcc, strict warnings |
 | 2026-10-12 | S1-U50 to S1-U61 | `eda6118` | Sarfaraz | PASS (12/12) | `logs/2026-10-12_telemetry_unit.txt` | PC build, gcc, strict warnings |
 | 2026-10-12 | S1-S01 to S1-S14 | `e6b75eb` | Sarfaraz | PASS (14/14) | `logs/2026-10-12_scenario.txt` | PC build, gcc, strict warnings, ASan/UBSan |
-| 2026-10-15 | S1-H01 to S1-H06 | `TBD` | Sarfaraz | PASS (6/6) | `logs/2026-10-15_wifi_join.txt`, `logs/2026-10-15_mqtt_offline_reconnect.txt`, `logs/2026-10-15_mqtt_retry_5s.txt` | Pico W on phone hotspot, Mosquitto on laptop, no SSID/IP in logs |
+| 2026-10-15 | S1-H01 to S1-H06 | `762234d` | Sarfaraz | PASS (6/6) | `logs/2026-10-15_wifi_join.txt`, `logs/2026-10-15_mqtt_offline_reconnect.txt`, `logs/2026-10-15_mqtt_retry_5s.txt` | Pico W on phone hotspot, Mosquitto on laptop, no SSID/IP in logs |
 
 ## Not yet tested
 - FR-COM-08 (START/STOP/RESET within 200 ms), NFR-PRF-05, NFR-REL-03, NFR-SEC-01/02, NFR-STD-02: need the full system on the Pico.
