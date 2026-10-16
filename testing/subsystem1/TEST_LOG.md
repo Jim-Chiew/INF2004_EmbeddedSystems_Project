@@ -188,13 +188,13 @@ Add a new row for every run. Never edit or delete old rows.
 | 2026-10-12 | S1-U50 to S1-U61 | `eda6118` | Sarfaraz | PASS (12/12) | `logs/2026-10-12_telemetry_unit.txt` | PC build, gcc, strict warnings |
 | 2026-10-12 | S1-S01 to S1-S14 | `e6b75eb` | Sarfaraz | PASS (14/14) | `logs/2026-10-12_scenario.txt` | PC build, gcc, strict warnings, ASan/UBSan |
 | 2026-10-15 | S1-H01 to S1-H06 | `762234d` | Sarfaraz | PASS (6/6) | `logs/2026-10-15_wifi_join.txt`, `logs/2026-10-15_mqtt_offline_reconnect.txt`, `logs/2026-10-15_mqtt_retry_5s.txt` | Pico W on phone hotspot, Mosquitto on laptop, no SSID/IP in logs |
-| 2026-10-16 | S1-D01 to S1-D15 | `TBD` | Sarfaraz | PASS (15/15) | `logs/2026-10-16_pc_tests.txt` | PC, gcc, ASan/UBSan, fakes |
-| 2026-10-16 | S1-C01 to S1-C57 | `TBD` | Sarfaraz | PASS (57/57) | `logs/2026-10-16_pc_tests.txt` | PC, fakes; S1-C43 worst case link loss 4010 ms on the fake clock, ack timeout 3000 ms |
-| 2026-10-16 | S1-T01 to S1-T10 | `TBD` | Sarfaraz | PASS (10/10) | `logs/2026-10-16_pc_tests.txt` | PC; new message writer gives the same text as snprintf on 200000 random samples |
-| 2026-10-16 | S1-R01 to S1-R06 | `TBD` | Sarfaraz | PASS (6/6) | `logs/2026-10-16_pc_tests.txt` | PC, 2 threads, 200000 samples + 100000 commands; x86 only, does not prove the memory barriers |
-| 2026-10-16 | S1-H10 to S1-H13 | `TBD` | Sarfaraz | PASS | `logs/2026-10-16_bench_sub.txt` (broker side: messages received). Commands and queue backlog were seen on the serial monitor, not saved as a file | one run per condition; plain TCP, anonymous broker, `bat` is a fake 7420 |
-| 2026-10-16 | S1-H14 | `TBD` | Sarfaraz | PASS with limit | serial monitor output, not saved as a file | 0.9 s: false link-lost about every 40 s. 3 s: 1 event in 10.7 min (about 16 expected). One run only. Serial capture started at 39 s |
-| 2026-10-16 | S1-H15 | `TBD` | Sarfaraz | PASS | serial monitor output, not saved as a file | normal at most about 1.1 ms; worst 15.2 ms seen once (connect attempt with broker off) |
+| 2026-10-16 | S1-D01 to S1-D15 | `b999c89` | Sarfaraz | PASS (15/15) | `logs/2026-10-16_pc_tests.txt` | PC, gcc, ASan/UBSan, fakes |
+| 2026-10-16 | S1-C01 to S1-C57 | `b999c89` | Sarfaraz | PASS (57/57) | `logs/2026-10-16_pc_tests.txt` | PC, fakes; S1-C43 worst case link loss 4010 ms on the fake clock, ack timeout 3000 ms |
+| 2026-10-16 | S1-T01 to S1-T10 | `b999c89` | Sarfaraz | PASS (10/10) | `logs/2026-10-16_pc_tests.txt` | PC; new message writer gives the same text as snprintf on 200000 random samples |
+| 2026-10-16 | S1-R01 to S1-R06 | `b999c89` | Sarfaraz | PASS (6/6) | `logs/2026-10-16_pc_tests.txt` | PC, 2 threads, 200000 samples + 100000 commands; x86 only, does not prove the memory barriers |
+| 2026-10-16 | S1-H10 to S1-H13 | `b999c89` | Sarfaraz | PASS | `logs/2026-10-16_bench_sub.txt` (broker side: messages received). Commands and queue backlog were seen on the serial monitor, not saved as a file | one run per condition; plain TCP, anonymous broker, `bat` is a fake 7420 |
+| 2026-10-16 | S1-H14 | `b999c89` | Sarfaraz | PASS with limit | serial monitor output, not saved as a file | 0.9 s: false link-lost about every 40 s. 3 s: 1 event in 10.7 min (about 16 expected). One run only. Serial capture started at 39 s |
+| 2026-10-16 | S1-H15 | `b999c89` | Sarfaraz | PASS | serial monitor output, not saved as a file | normal at most about 1.1 ms; worst 15.2 ms seen once (connect attempt with broker off) |
 
 ## Not yet tested
 - Link-loss fix (3 s ack timeout): tested in one 10.7 minute run only. Repeat it once more.
