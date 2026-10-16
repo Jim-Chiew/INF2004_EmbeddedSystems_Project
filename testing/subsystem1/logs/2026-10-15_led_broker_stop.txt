@@ -1,0 +1,2 @@
+# LED observed by eye: solid ON when CONNECTED, blinking when DISCONNECTED (broker stopped with Ctrl+C), solid again after broker restart.
+FR-COM-06 rate: 59 blinks in 30.0 s = 1.97 Hz (phone video, stopwatch, counted by eye). Result: PASS (limit 54 to 66). First attempt 24 in 13 s = 1.85 Hz, too short a window to judge.

@@ -1,0 +1,15 @@
+[TEST] S1-S01 PASS  power-up with no link: DISCONNECTED
+[TEST] S1-S02 PASS  DISCONNECTED: LED is blinking (on then off)
+[TEST] S1-S03 PASS  3 samples while offline: all stored, none sent
+[TEST] S1-S04 PASS  link back with backlog: SYNC
+[TEST] S1-S05 PASS  SYNC: LED stays on
+[TEST] S1-S06 PASS  backlog drained: CONNECTED, queue empty
+[TEST] S1-S07 PASS  broker received samples 1,2,3 in order
+[TEST] S1-S08 PASS  link lost: back to DISCONNECTED
+[TEST] S1-S09 PASS  105 offline samples: 100 kept, 5 discarded
+[TEST] S1-S10 PASS  reconnect after overflow: SYNC
+[TEST] S1-S11 PASS  overflow backlog drained: CONNECTED
+[TEST] S1-S12 PASS  broker got the newest 100 (ts 9..108); oldest 5 were dropped
+[TEST] S1-S13 PASS  broker order is increasing
+[TEST] S1-S14 PASS  discard counter reset after full transmission (FR-COM-12)
+ALL TESTS PASSED (0 failed)
