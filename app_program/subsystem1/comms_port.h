@@ -1,16 +1,15 @@
 /*
  * comms_port.h  --  the few things comms.c needs from the platform.
  *
- * comms.c (the engine) contains no Pico SDK, no micro T-Kernel and no radio
- * code. Everything it needs from the platform is in this list. There are
- * three implementations:
+ * comms.c (the engine) contains no Pico SDK and no radio code. Everything it
+ * needs from the platform is in this list. There are two implementations:
  *
- *   comms_port_utk.c              micro T-Kernel base (the team's real build)
- *   bench/comms_port_sdk.c        plain Pico SDK bench build
+ *   bench/comms_port_sdk.c        plain Pico SDK (the team build and the bench)
  *   testing/.../fake_port.h       PC tests (fake clock, fake radio)
  *
- * Which one is used is decided by a compile flag, see below. The micro
- * T-Kernel build needs no flag: it is the default.
+ * Which one is used is decided by a compile flag, see below: CMake defines
+ * COMMS_PORT_SDK, and the PC tests define COMMS_HOST_TEST.
+ * The _PICO_RP2040_ branch is for an old port that is not used any more.
  */
 #ifndef COMMS_PORT_H
 #define COMMS_PORT_H
@@ -27,7 +26,7 @@
 #elif defined(COMMS_PORT_SDK)           /* plain Pico SDK: CMake sets it */
   #define COMMS_ENV_SDK 1
   #define COMMS_HAVE_NET 1
-#elif defined(_PICO_RP2040_)            /* micro T-Kernel makefile sets it */
+#elif defined(_PICO_RP2040_)            /* old port, not used by the team build */
   #define COMMS_ENV_UTK 1
   #if defined(TM_MQTT) && (TM_MQTT == 1)
     #define COMMS_HAVE_NET 1            /* make NET=lwip MQTT=1 */
@@ -35,7 +34,7 @@
     #define COMMS_HAVE_NET 0            /* no lwIP/MQTT in this build: stubs */
   #endif
 #else
-  #error "comms: define COMMS_HOST_TEST, COMMS_PORT_SDK, or build with the micro T-Kernel makefile"
+  #error "comms: define COMMS_HOST_TEST or COMMS_PORT_SDK"
 #endif
 
 /* ---- logging: one line per event, never in a loop ---- */
@@ -77,14 +76,12 @@ int port_link(void);
 const char *port_link_text(void);
 
 /* Ask the radio to (re)join the network. Returns 1 if this port started a
- * join (comms.c then logs it), 0 if something else retries the join itself
- * (the micro T-Kernel WiFi task does). Called by comms_task() every 5 s while
- * the link is down. */
+  * join (comms.c then logs it), 0 if something else retries the join itself.
+ * Called by comms_task() every 5 s while the link is down. */
 int port_wifi_join(const comms_config_t *cfg);
 
-/* Lock around lwIP calls. Needed when lwIP runs in a background context (SDK
- * bench). Empty on micro T-Kernel, where comms_task() already runs inside the
- * one task that owns lwIP. */
+/* Lock around lwIP calls. Needed because lwIP runs in a background context
+ * in the SDK build (cyw43_arch_lwip_begin / end). */
 void port_net_lock(void);
 void port_net_unlock(void);
 

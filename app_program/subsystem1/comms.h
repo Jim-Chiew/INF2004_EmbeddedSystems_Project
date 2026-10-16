@@ -12,27 +12,22 @@
  *   comms_now_ms()         milliseconds since comms_init(), for ts
  *   comms_task()           the network work: reconnect, send, receive
  *
- * WHO CALLS WHAT
+  * WHO CALLS WHAT
  *
- *   micro T-Kernel build (the team's base):
- *     - comms_task() is called by the WiFi task (cyw43_utk_task). That task is
- *       the only owner of lwIP, so all network work happens there. YOU DO NOT
- *       CALL comms_task().
- *     - comms_init() is called once from subsystem1_init().
- *     - comms_send(), comms_led_task() are called from Telemetry_Comms_Task
- *       (one task only).
- *     - comms_get_command() is called by the Nav task (one task only).
- *     - comms_get_state() and comms_get_stats() can be called from any task.
- *
- *   Plain Pico SDK bench build (testing/subsystem1/bench):
- *     - one loop calls comms_send(), comms_task(), comms_led_task() and
- *       comms_get_command() every ~10 ms.
- *
- * WHY THE SPLIT: comms_send() only puts the message in a small inbox (lock
+ *   The team build is the plain Pico SDK with one polled main loop.
+ *     - comms_init() is called once at start-up.
+ *     - comms_task() is called every ~10 ms. It is the only function that
+ *       touches lwIP. It never blocks.
+ *     - comms_send() is called by the telemetry code, about once per second.
+ *     - comms_led_task() is called every ~10 ms.
+ *     - comms_get_command() is called by the Nav code, at least every 20 ms.
+ *     - comms_get_state() and comms_get_stats() can be called from anywhere.
+ *   See testing/subsystem1/bench/buddy1_mqtt.c for a working loop.
+  * WHY THE SPLIT: comms_send() only puts the message in a small inbox (lock
  * free, never blocks). comms_task() moves it into the 100-message queue and
- * sends it. So the sending task and the WiFi task never share the queue and
- * need no mutex. Likewise the commands go from comms_task() to
- * comms_get_command() through a small ring.
+ * sends it. So the sending code and comms_task() never share the queue and
+ * need no mutex when they run in different tasks. Likewise the commands go
+ * from comms_task() to comms_get_command() through a small ring.
  *
  * Rules:
  *  - comms_send(): ONE task only. comms_get_command(): ONE task only.
@@ -43,8 +38,8 @@
  *
  * The pure logic is in trans_queue, com_state, status_led and telemetry,
  * which are tested on a PC. comms.c (the engine) is tested on a PC with a
- * fake radio and a fake broker. The two small "ports" (comms_port_utk.c and
- * bench/comms_port_sdk.c) are the only parts that touch real hardware.
+ * fake radio and a fake broker. The only part that touches real hardware is
+ * the small port, bench/comms_port_sdk.c.
  */
 #ifndef COMMS_H
 #define COMMS_H
@@ -89,9 +84,7 @@ typedef struct {
     const char *password;        /* NULL = anonymous */
 } comms_config_t;
 /* The strings are not copied. They must stay valid while the car runs.
- * On the micro T-Kernel build the WiFi task joins the network itself with
- * WIFI_SSID / WIFI_PASSWORD from config/wifi_secrets.h, so wifi_ssid and
- * wifi_password are only checked, not used. */
+   * comms_init() only checks them. comms_task() starts the join. */
 
 typedef struct {
     uint32_t sent_acked;      /* messages the broker has confirmed */
