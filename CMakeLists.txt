@@ -83,29 +83,27 @@ pico_add_extra_outputs(buddy1_wifi)
 # ---------------------------------------------------------------------------
 # Buddy 1: stage C bench test, WiFi + MQTT telemetry with the offline queue.
 # ---------------------------------------------------------------------------
-add_executable(buddy1_mqtt
-    testing/subsystem1/bench/buddy1_mqtt.c
-    ${S1_DIR}/com_state.c
-    ${S1_DIR}/status_led.c
-    ${S1_DIR}/telemetry.c
-    ${S1_DIR}/trans_queue.c
-)
+set(S1_DIR ${CMAKE_CURRENT_LIST_DIR}/app_program/subsystem1)
+set(BENCH_DIR ${CMAKE_CURRENT_LIST_DIR}/testing/subsystem1/bench)
 
-target_include_directories(buddy1_mqtt PRIVATE
-    ${S1_DIR}
-    ${CMAKE_CURRENT_LIST_DIR}/testing/subsystem1/bench
-)
+add_executable(buddy1_mqtt
+  ${BENCH_DIR}/buddy1_mqtt.c
+  ${BENCH_DIR}/comms_port_sdk.c
+  ${S1_DIR}/comms.c
+  ${S1_DIR}/trans_queue.c
+  ${S1_DIR}/com_state.c
+  ${S1_DIR}/status_led.c
+  ${S1_DIR}/telemetry.c)
+
+target_include_directories(buddy1_mqtt PRIVATE ${S1_DIR} ${BENCH_DIR})
+target_compile_definitions(buddy1_mqtt PRIVATE COMMS_PORT_SDK)
 target_compile_options(buddy1_mqtt PRIVATE -Wall -Wextra)
 
-pico_set_program_name(buddy1_mqtt "buddy1_mqtt")
-pico_set_program_version(buddy1_mqtt "0.1")
+target_link_libraries(buddy1_mqtt
+  pico_stdlib
+  pico_cyw43_arch_lwip_threadsafe_background
+  pico_lwip_mqtt)
+
 pico_enable_stdio_usb(buddy1_mqtt 1)
 pico_enable_stdio_uart(buddy1_mqtt 0)
-
-target_link_libraries(buddy1_mqtt PRIVATE
-    pico_stdlib
-    pico_cyw43_arch_lwip_threadsafe_background
-    pico_lwip_mqtt
-)
-
 pico_add_extra_outputs(buddy1_mqtt)

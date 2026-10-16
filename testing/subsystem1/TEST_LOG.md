@@ -1,6 +1,6 @@
 # Subsystem 1 - test log
 
-These are unit tests that run on a PC (no Pico needed). They check the plain-C logic against the requirements in the design review document. Tests that need the real Pico, the WiFi network or the kernel are not in this file yet.
+These tests check the plain-C logic against the requirements in the design review document. Tests marked auto run on a PC. Tests marked bench run on a Pico W with real WiFi and a Mosquitto broker.
 
 ## Test cases
 
@@ -79,7 +79,102 @@ Test IDs never change and are never reused.
 | S1-H06 | MQTT retry every 5 s (measured 5002 ms) | FR-COM-02 | manual (Pico W) | `testing/subsystem1/bench/buddy1_mqtt.c` |
 | S1-H07 | LED solid ON when connected, blinking when broker stopped (by eye) | FR-COM-05, FR-COM-06 | manual (Pico W) | `testing/subsystem1/bench/buddy1_mqtt.c` |
 | S1-H08 | LED blink rate 2 Hz within 10% (59 blinks in 30 s = 1.97 Hz) | FR-COM-06 | manual (Pico W) | `testing/subsystem1/bench/buddy1_mqtt.c` |
-*Method:* **auto** = a check in the test program, result printed on the console. *robustness* means the test protects against bad input and does not map to one requirement.
+| S1-D01 | empty at start | FR-COM-08 | auto (fakes) | `testing/subsystem1/test_comms_cmd.c` |
+| S1-D02 | START accepted | FR-COM-08 | auto (fakes) | `testing/subsystem1/test_comms_cmd.c` |
+| S1-D03 | STOP accepted | FR-COM-08 | auto (fakes) | `testing/subsystem1/test_comms_cmd.c` |
+| S1-D04 | RESET accepted | FR-COM-08 | auto (fakes) | `testing/subsystem1/test_comms_cmd.c` |
+| S1-D05 | each command returned once | FR-COM-08 | auto (fakes) | `testing/subsystem1/test_comms_cmd.c` |
+| S1-D06 | bad text gives no command | FR-COM-08, NFR-SEC-01 | auto (fakes) | `testing/subsystem1/test_comms_cmd.c` |
+| S1-D07 | 6 bad messages counted | FR-COM-08, NFR-SEC-01 | auto (fakes) | `testing/subsystem1/test_comms_cmd.c` |
+| S1-D08 | other topic ignored | robustness | auto (fakes) | `testing/subsystem1/test_comms_cmd.c` |
+| S1-D09 | other topic not counted as bad command | robustness | auto (fakes) | `testing/subsystem1/test_comms_cmd.c` |
+| S1-D10 | fragmented STOP accepted | FR-COM-08 | auto (fakes) | `testing/subsystem1/test_comms_cmd.c` |
+| S1-D11 | ring full: 3 kept, 1 dropped and counted | robustness | auto (fakes) | `testing/subsystem1/test_comms_cmd.c` |
+| S1-D12 | kept in order | FR-COM-08 | auto (fakes) | `testing/subsystem1/test_comms_cmd.c` |
+| S1-D13 | then empty | robustness | auto (fakes) | `testing/subsystem1/test_comms_cmd.c` |
+| S1-D14 | same-length wrong texts give no command | FR-COM-08, NFR-SEC-01 | auto (fakes) | `testing/subsystem1/test_comms_cmd.c` |
+| S1-D15 | 7 wrong texts counted as rejected | FR-COM-08, NFR-SEC-01 | auto (fakes) | `testing/subsystem1/test_comms_cmd.c` |
+| S1-C01 | send before init is refused (NOT_READY) | robustness | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C02 | comms_task before init does nothing | robustness | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C03 | init succeeds | FR-COM-02 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C04 | a second init is harmless | robustness | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C05 | init starts one WiFi join | FR-COM-02 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C06 | power-up state is DISCONNECTED | Section 7 assumption (a) | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C07 | no WiFi retry before 5 s | FR-COM-02 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C08 | WiFi retry at 5 s (FR-COM-02) | FR-COM-02 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C09 | three samples accepted while offline | FR-COM-09 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C10 | queue holds 3 | FR-COM-09 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C11 | LED blinks at about 2 Hz when DISCONNECTED | FR-COM-06 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C12 | nothing published while offline | FR-COM-09 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C13 | MQTT connect starts as soon as WiFi is up | FR-COM-02 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C14 | unanswered attempt is cancelled and retried | FR-COM-02 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C15 | retry interval is 5 s (FR-COM-02) | FR-COM-02 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C16 | subscribes to the command topic after connect | FR-COM-08 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C17 | subscribes only once per connection | FR-COM-08 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C18 | first publish is the OLDEST message | FR-COM-03, FR-COM-04 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C19 | published on the telemetry topic | FR-COM-07 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C20 | message stays queued until the broker confirms | FR-COM-12 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C21 | second message sent after first ack | FR-COM-12 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C22 | third message sent, order kept | FR-COM-04 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C23 | state is SYNC while messages are waiting | FR-COM-03 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C24 | queue empty, 3 acked | FR-COM-12 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C25 | state is CONNECTED when the queue is empty | FR-COM-04 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C26 | LED solid ON when CONNECTED | FR-COM-05 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C27 | live message is published | FR-COM-07 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C28 | failed ack: message NOT removed (FR-COM-12) | FR-COM-12 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C29 | failed ack: same message sent again | FR-COM-12 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C30 | no ack within COMMS_ACK_TIMEOUT_MS (3 s): link treated as lost, DISCONNECTED (FR-COM-01) | FR-COM-01 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C31 | message kept after the link loss | FR-COM-09, FR-COM-12 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C32 | subscribes again after the reconnect | FR-COM-08 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C33 | after reconnect the same message is sent again | FR-COM-12 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C34 | message removed only after the ack | FR-COM-12 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C35 | late ack for an old message does not remove the current one | FR-COM-12 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C36 | the right ack removes it | FR-COM-12 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C37 | WiFi lost: DISCONNECTED | FR-COM-01 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C38 | messages kept while WiFi is down | FR-COM-09 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C39 | subscribes again after WiFi returns | FR-COM-08 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C40 | after reconnect the oldest queued message goes first | FR-COM-03, FR-COM-04 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C41 | then the next, order kept | FR-COM-04 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C42 | back to CONNECTED when drained | FR-COM-04 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C43 | link loss detected within 4.1 s, worst case (1 s sample gap + 3 s ack timeout) (FR-COM-01) | FR-COM-01 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C44 | queue empty before the overflow test | FR-COM-09 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C45 | 105 samples accepted one at a time | FR-COM-09 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C46 | queue holds 100, 5 oldest discarded (FR-COM-09/10/11) | FR-COM-09, FR-COM-10, FR-COM-11 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C47 | after overflow the oldest KEPT message goes first (sample 6) | FR-COM-10, FR-COM-11 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C48 | command received while sending telemetry | FR-COM-08 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C49 | init rejects a missing SSID | robustness | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C50 | send rejects a NULL sample | robustness | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C51 | inbox holds 7: the next 13 samples get BUSY | NFR-RES-03 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C52 | the 13 dropped samples are counted as discarded | FR-COM-09, FR-COM-10, FR-COM-11 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C53 | the 7 accepted samples reached the queue | FR-COM-09 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C54 | and the first one is sent first | FR-COM-04 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C55 | 500 samples at 1 per task call: none lost | FR-COM-09 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C56 | every lwIP call was made with the port lock held | NFR-MNT-02 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-C57 | lock and unlock are always paired | NFR-MNT-02 | auto (fakes) | `testing/subsystem1/test_comms_task.c` |
+| S1-T01 | 200000 random samples: same text as snprintf | NFR-RES-03 | auto (PC) | `testing/subsystem1/test_telemetry_nolibc.c` |
+| S1-T02 | min/max values: same text as snprintf | NFR-RES-03 | auto (PC) | `testing/subsystem1/test_telemetry_nolibc.c` |
+| S1-T03 | all zero: same text as snprintf | NFR-RES-03 | auto (PC) | `testing/subsystem1/test_telemetry_nolibc.c` |
+| S1-T04 | sizes 1..120: right result, nothing written past the buffer | NFR-RES-03 | auto (PC) | `testing/subsystem1/test_telemetry_nolibc.c` |
+| S1-T05 | NULL sample refused | robustness | auto (PC) | `testing/subsystem1/test_telemetry_nolibc.c` |
+| S1-T06 | NULL buffer refused | robustness | auto (PC) | `testing/subsystem1/test_telemetry_nolibc.c` |
+| S1-T07 | size 0 refused | robustness | auto (PC) | `testing/subsystem1/test_telemetry_nolibc.c` |
+| S1-T08 | quote in state name refused | robustness | auto (PC) | `testing/subsystem1/test_telemetry_nolibc.c` |
+| S1-T09 | empty state name refused | robustness | auto (PC) | `testing/subsystem1/test_telemetry_nolibc.c` |
+| S1-T10 | state name without end marker refused | robustness | auto (PC) | `testing/subsystem1/test_telemetry_nolibc.c` |
+| S1-R01 | 200000 samples accepted by comms_send | NFR-MNT-02, FR-COM-12 | auto (2 threads) | `testing/subsystem1/test_comms_threads.c` |
+| S1-R02 | all 200000 reached the broker (none lost) | NFR-MNT-02, FR-COM-12 | auto (2 threads) | `testing/subsystem1/test_comms_threads.c` |
+| S1-R03 | in strict order, no gaps (none repeated, reordered or missing) | NFR-MNT-02, FR-COM-12 | auto (2 threads) | `testing/subsystem1/test_comms_threads.c` |
+| S1-R04 | every message text intact (none corrupted) | NFR-MNT-02, FR-COM-12 | auto (2 threads) | `testing/subsystem1/test_comms_threads.c` |
+| S1-R05 | nothing discarded in the queue | NFR-MNT-02, FR-COM-12 | auto (2 threads) | `testing/subsystem1/test_comms_threads.c` |
+| S1-R06 | 100000 commands received, in order, none lost | NFR-MNT-02, FR-COM-08 | auto (2 threads) | `testing/subsystem1/test_comms_threads.c` |
+| S1-H10 | Pico W joins WiFi and connects to the broker | FR-COM-02 | bench | `testing/subsystem1/bench/buddy1_mqtt.c` |
+| S1-H11 | telemetry reaches the broker (QoS 1), seen in the broker log and in `mosquitto_sub` | FR-COM-07, FR-COM-12 | bench | `testing/subsystem1/bench/buddy1_mqtt.c` |
+| S1-H12 | START, STOP, RESET accepted; wrong text rejected and counted | FR-COM-08 | bench | `testing/subsystem1/bench/buddy1_mqtt.c` |
+| S1-H13 | broker started late: about 100 queued messages sent after it came up | FR-COM-09, FR-COM-04 | bench | `testing/subsystem1/bench/buddy1_mqtt.c` |
+| S1-H14 | false link-lost events with ack timeout 0.9 s versus 3 s (10.7 min run) | FR-COM-01 | bench | `testing/subsystem1/bench/buddy1_mqtt.c` |
+| S1-H15 | comms_task run time (max and CPU load) printed on the status line | NFR-RTM-03 | bench | `testing/subsystem1/bench/buddy1_mqtt.c` |
+
+*Method:* **auto** = a check in the test program, result printed on the console. **auto (fakes)** = PC test where the platform, WiFi and broker are replaced by fakes in `testing/subsystem1/stubs/`; it checks the logic only, not the real radio or broker. **auto (2 threads)** = two PC threads share the inbox and the command ring. **manual (Pico W)** and **bench** = run on the Pico W with real WiFi and a real Mosquitto broker. *robustness* means the test protects against bad input and does not map to one requirement.
 
 ## Results
 
@@ -93,6 +188,19 @@ Add a new row for every run. Never edit or delete old rows.
 | 2026-10-12 | S1-U50 to S1-U61 | `eda6118` | Sarfaraz | PASS (12/12) | `logs/2026-10-12_telemetry_unit.txt` | PC build, gcc, strict warnings |
 | 2026-10-12 | S1-S01 to S1-S14 | `e6b75eb` | Sarfaraz | PASS (14/14) | `logs/2026-10-12_scenario.txt` | PC build, gcc, strict warnings, ASan/UBSan |
 | 2026-10-15 | S1-H01 to S1-H06 | `762234d` | Sarfaraz | PASS (6/6) | `logs/2026-10-15_wifi_join.txt`, `logs/2026-10-15_mqtt_offline_reconnect.txt`, `logs/2026-10-15_mqtt_retry_5s.txt` | Pico W on phone hotspot, Mosquitto on laptop, no SSID/IP in logs |
+| 2026-10-16 | S1-D01 to S1-D15 | `TBD` | Sarfaraz | PASS (15/15) | `logs/2026-10-16_pc_tests.txt` | PC, gcc, ASan/UBSan, fakes |
+| 2026-10-16 | S1-C01 to S1-C57 | `TBD` | Sarfaraz | PASS (57/57) | `logs/2026-10-16_pc_tests.txt` | PC, fakes; S1-C43 worst case link loss 4010 ms on the fake clock, ack timeout 3000 ms |
+| 2026-10-16 | S1-T01 to S1-T10 | `TBD` | Sarfaraz | PASS (10/10) | `logs/2026-10-16_pc_tests.txt` | PC; new message writer gives the same text as snprintf on 200000 random samples |
+| 2026-10-16 | S1-R01 to S1-R06 | `TBD` | Sarfaraz | PASS (6/6) | `logs/2026-10-16_pc_tests.txt` | PC, 2 threads, 200000 samples + 100000 commands; x86 only, does not prove the memory barriers |
+| 2026-10-16 | S1-H10 to S1-H13 | `TBD` | Sarfaraz | PASS | `logs/2026-10-16_bench_sub.txt` (broker side: messages received). Commands and queue backlog were seen on the serial monitor, not saved as a file | one run per condition; plain TCP, anonymous broker, `bat` is a fake 7420 |
+| 2026-10-16 | S1-H14 | `TBD` | Sarfaraz | PASS with limit | serial monitor output, not saved as a file | 0.9 s: false link-lost about every 40 s. 3 s: 1 event in 10.7 min (about 16 expected). One run only. Serial capture started at 39 s |
+| 2026-10-16 | S1-H15 | `TBD` | Sarfaraz | PASS | serial monitor output, not saved as a file | normal at most about 1.1 ms; worst 15.2 ms seen once (connect attempt with broker off) |
 
 ## Not yet tested
-- FR-COM-08 (START/STOP/RESET within 200 ms), NFR-PRF-05, NFR-REL-03, NFR-SEC-01/02, NFR-STD-02: need the full system on the Pico.
+- Link-loss fix (3 s ack timeout): tested in one 10.7 minute run only. Repeat it once more.
+- NFR-PRF-05 (99% delivery, latency under 500 ms) and NFR-REL-03 (reconnect within 15 s in 95% of trials): need repeated runs.
+- NFR-SEC-01 and NFR-SEC-02 (authentication, TLS): not implemented. The bench broker is anonymous and plain TCP.
+- NFR-STD-02 (keep-alive 1 s): the code uses 10 s plus a 3 s ack timeout. The requirement text must be changed.
+- FR-COM-07 / FR-COM-13: `bat` is 0 in the real car because no battery source exists yet. The bench uses a fake 7420.
+- QoS 1 can deliver a duplicate after a reconnect. The receiver should ignore a repeated `ts`.
+- Memory-barrier rules (write data before the index; read data before freeing the slot): checked by reading the code only. The PC thread test cannot prove them.
