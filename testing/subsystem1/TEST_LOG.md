@@ -15,8 +15,8 @@ Test IDs never change and are never reused.
 | S1-U05 | oldest message is now number 2 | FR-COM-10 | auto | `testing/subsystem1/test_trans_queue.c` |
 | S1-U06 | discard counter keeps counting | FR-COM-11 | auto | `testing/subsystem1/test_trans_queue.c` |
 | S1-U07 | NULL pointer and zero length are rejected | robustness | auto | `testing/subsystem1/test_trans_queue.c` |
-| S1-U08 | over-long message rejected (one byte more than the frame; the frame is 10 bytes since version 2) | NFR-RES-03 | auto | `testing/subsystem1/test_trans_queue.c` |
-| S1-U09 | exactly one frame (10 bytes) accepted | NFR-RES-03 | auto | `testing/subsystem1/test_trans_queue.c` |
+| S1-U08 | over-long message rejected (one byte more than TQ_MSG_MAX; a slot holds the longest frame, 24 bytes since version 3) | NFR-RES-03 | auto | `testing/subsystem1/test_trans_queue.c` |
+| S1-U09 | exactly one full-length frame (24 bytes) accepted | NFR-RES-03 | auto | `testing/subsystem1/test_trans_queue.c` |
 | S1-U10 | ack of a message that was already dropped is refused | FR-COM-12 | auto | `testing/subsystem1/test_trans_queue.c` |
 | S1-U11 | a refused ack does not reset the discard counter | FR-COM-12 | auto | `testing/subsystem1/test_trans_queue.c` |
 | S1-U12 | 100 messages sent oldest first, in order | FR-COM-03, FR-COM-04 | auto | `testing/subsystem1/test_trans_queue.c` |
@@ -183,7 +183,13 @@ Test IDs never change and are never reused.
 | S1-B20 | command byte 0 rejected | Change requirement (binary commands) | auto | `testing/subsystem1/test_telemetry.c` |
 | S1-B21 | command byte 4 rejected | Change requirement (binary commands) | auto | `testing/subsystem1/test_telemetry.c` |
 | S1-B22 | wrong length or NULL command rejected | robustness | auto | `testing/subsystem1/test_telemetry.c` |
-| S1-L01 | layout: fields add up to 63 bits, status + sequence + spare 9 bits, total 72, frame 10 bytes, version 2, the object length has its own "none yet" code, no overlaps | Minimum-Bit change, Version C (one shared header) | auto | `testing/subsystem1/test_data_layout.c` |
+| S1-B25 | known frame C matches an independent encoder (every error flag set, code "A") | Minimum-Bit change, FR-COM-07 | auto | `testing/subsystem1/test_telemetry.c` |
+| S1-B26 | all seven error flags round trip; the spare bit 7 is never sent | FR-SAF-03, FR-COM-07 | auto | `testing/subsystem1/test_telemetry.c` |
+| S1-B27 | the decoded barcode code round trips, 0 to 12 printable characters; a control character ends it | FR-COM-07, IF-09 | auto | `testing/subsystem1/test_telemetry.c` |
+| S1-B28 | a buffer without room for the code is rejected | robustness | auto | `testing/subsystem1/test_telemetry.c` |
+| S1-B29 | a frame length that disagrees with the text-length byte is rejected | robustness | auto | `testing/subsystem1/test_telemetry.c` |
+| S1-B30 | a text-length byte over DL_BC_TEXT_MAX is rejected | robustness | auto | `testing/subsystem1/test_telemetry.c` |
+| S1-L01 | layout: fields add up to 63 bits, status + sequence + spare 9 bits, total 72, frame 12 to 24 bytes, version 3, the error-flag and text-length bytes follow the bit block, the object length has its own "none yet" code, no overlaps | Minimum-Bit change, Version C (one shared header) | auto | `testing/subsystem1/test_data_layout.c` |
 | S1-F01 | send accepted | Version C: sequence + drop flag, FR-COM-10/11 | auto (fakes) | `testing/subsystem1/test_comms_frame.c` |
 | S1-F02 | first frame has sequence 0 (caller's value ignored) | Version C: sequence + drop flag, FR-COM-10/11 | auto (fakes) | `testing/subsystem1/test_comms_frame.c` |
 | S1-F03 | Wi-Fi loss flag set while Wi-Fi is down | Version C: sequence + drop flag, FR-COM-10/11 | auto (fakes) | `testing/subsystem1/test_comms_frame.c` |
@@ -218,7 +224,7 @@ Test IDs never change and are never reused.
 | S1-H13 | broker started late: about 100 queued messages sent after it came up | FR-COM-09, FR-COM-04 | bench | `testing/subsystem1/bench/buddy1_mqtt.c` |
 | S1-H14 | false link-lost events with ack timeout 0.9 s versus 3 s (10.7 min run) | FR-COM-01 | bench | `testing/subsystem1/bench/buddy1_mqtt.c` |
 | S1-H15 | comms_task run time (max and CPU load) printed on the status line | NFR-RTM-03 | bench | `testing/subsystem1/bench/buddy1_mqtt.c` |
-| S1-H20 | binary frames reach the broker; decoded values equal the TX lines on the serial monitor; every frame is 10 bytes; sequence counts 0-15 | Minimum-Bit change, FR-COM-07 | bench | `testing/subsystem1/bench/buddy1_mqtt.c`, `tools/decode_frame.py` |
+| S1-H20 | binary frames reach the broker; decoded values equal the TX lines on the serial monitor; every frame is 12 bytes plus the decoded code; sequence counts 0-15 | Minimum-Bit change, FR-COM-07 | bench | `testing/subsystem1/bench/buddy1_mqtt.c`, `tools/decode_frame.py` |
 | S1-H21 | command bytes 1, 2, 3 (START, STOP, RESET) accepted | Change requirement (binary commands), FR-COM-08 | bench | `tools/make_cmd_files.py` |
 | S1-H22 | bad command files (0, 4, 2 bytes, old text START) rejected and counted | Change requirement (binary commands) | bench | `tools/make_cmd_files.py` |
 | S1-H23 | retained START is ignored after a reconnect (real broker) | Version C: stale/retained START | bench | `tools/make_cmd_files.py` |

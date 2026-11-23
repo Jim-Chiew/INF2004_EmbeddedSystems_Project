@@ -14,9 +14,10 @@ extra Python packages are needed.
 
 Options: --host (default 192.168.137.1), --port (default 1883).
 
-The frame layout is app_program/subsystem1/data_layout.h: 1 version byte, then
-9 payload bytes of bit fields, sent little-endian. Keep FIELDS below in step with
-that file.
+The frame layout is app_program/subsystem1/data_layout.h: 1 version byte, 9
+payload bytes of bit fields (little-endian), 1 byte of error flags, 1 byte
+saying how long the decoded barcode code is, and then that code -- 12 to 24
+bytes in all. Keep FIELDS and ERR_FLAGS below in step with that file.
 
 gui reads with the paho library if it is installed (pip install paho-mqtt), which is the
 most reliable on Windows, and otherwise with mosquitto_sub like watch does.
@@ -42,8 +43,28 @@ TOPICS = (TOPIC_TELEMETRY, TOPIC_CMD, TOPIC_BARCODE, TOPIC_OBSTACLE, TOPIC_STATU
 STALE_S = 3  # gui: no frame for this long means NO DATA
 DEFAULT_HOST = "192.168.137.1"
 
-DL_VERSION = 2
-FRAME_BYTES = 10
+DL_VERSION = 3
+PAYLOAD_BYTES = 9           # the bit-field block, bytes 1..9
+ERRORS_BYTE = 10            # DL_ERRORS_BYTE: the error-flag bitmap
+BC_LEN_BYTE = 11            # DL_BC_LEN_BYTE: how many characters of code follow
+HEAD_BYTES = 12             # DL_HEAD_BYTES: everything except the barcode text
+BC_TEXT_MAX = 12            # DL_BC_TEXT_MAX
+FRAME_MIN_BYTES = HEAD_BYTES
+FRAME_MAX_BYTES = HEAD_BYTES + BC_TEXT_MAX
+
+# The error flags in byte 10 (data_layout.h DL_ERRF_*): the same bits the car's
+# RGB error LEDs and its USB status line show. Any number can be set at once,
+# and none of them stops the car by itself.
+ERR_FLAGS = (
+    (0x01, "SAFETY",   "lifted, overturned, or the e-stop is latched"),
+    (0x02, "MOTOR",    "the wheel encoders never started"),
+    (0x04, "IMU",      "IMU missing, or its reads keep failing"),
+    (0x08, "CAL",      "IMU calibration failed"),
+    (0x10, "BARCODE",  "the last barcode pass did not decode"),
+    (0x20, "NET",      "WiFi / broker was down when the frame was built"),
+    (0x40, "OBSTACLE", "something within the stop distance ahead"),
+)
+ERR_ALL = 0x7F              # DL_ERRF_ALL; bit 7 is spare and always 0
 
 # name: (shift, bits)  -- data_layout.h
 FIELDS = {
@@ -67,13 +88,29 @@ JOLT_STEP_G = 0.02  # data_layout.h DL_HUMP_JOLT_STEP_MG = 20
 JOLT_MAX = 128      # DL_HUMP_H_MAX_MM (now jolt steps)
 
 
+def err_names(bits: int) -> list:
+    """The names of the error flags set in the frame's error byte."""
+    return [name for bit, name, _ in ERR_FLAGS if bits & bit]
+
+
 def unpack(frame: bytes) -> dict:
-    if len(frame) != FRAME_BYTES:
-        raise ValueError(f"{len(frame)} bytes, expected {FRAME_BYTES}")
+    """One frame as its fields. The length varies: everything up to the
+    text-length byte is fixed, then that many characters of barcode code."""
+    if len(frame) < HEAD_BYTES:
+        raise ValueError(f"{len(frame)} bytes, expected at least {HEAD_BYTES}")
     if frame[0] != DL_VERSION:
         raise ValueError(f"version byte {frame[0]}, expected {DL_VERSION}")
-    word = int.from_bytes(frame[1:], "little")
-    return {k: (word >> s) & ((1 << b) - 1) for k, (s, b) in FIELDS.items()}
+    n = frame[BC_LEN_BYTE]
+    if n > BC_TEXT_MAX:
+        raise ValueError(f"barcode text length {n}, at most {BC_TEXT_MAX}")
+    if len(frame) != HEAD_BYTES + n:
+        raise ValueError(f"{len(frame)} bytes, but the length byte says {n} of barcode text "
+                         f"({HEAD_BYTES + n} bytes)")
+    word = int.from_bytes(frame[1:1 + PAYLOAD_BYTES], "little")
+    f = {k: (word >> s) & ((1 << b) - 1) for k, (s, b) in FIELDS.items()}
+    f["errors"] = frame[ERRORS_BYTE] & ERR_ALL
+    f["bc_text"] = frame[HEAD_BYTES:].decode("ascii", errors="replace")
+    return f
 
 
 def compass(deg: int) -> str:
@@ -98,11 +135,15 @@ def describe(f: dict) -> str:
 
     obj = "none yet" if f.get("obj_len", OBJ_NONE) == OBJ_NONE else f"{f['obj_len']} cm"
 
-    flags = [n for n in ("error", "wifi_loss", "low_batt", "drop", "hump", "bc_err") if f[n]]
+    code = f.get("bc_text") or "-"
+    errs = err_names(f.get("errors", 0))
+
+    flags = [n for n in FLAG_NAMES if f[n]]
     return (f"#{f['seq']:<2} {STATES[f['state']]:<15} | speed {speed:<9} | line {LINES[f['line']]:<11} | "
             f"heading {heading:<10} | tilt {angle(f['tilt']):>5} roll {angle(f['roll']):>5} | "
-            f"barcode {BC_DIRS[f['bc_dir']]:<5} | obstacle {dist} | object {obj:<8} | "
-            f"hump jolt {jolt:<8} | flags {' '.join(flags).upper() if flags else '-'}")
+            f"barcode {code:<6} {BC_DIRS[f['bc_dir']]:<7} | obstacle {dist} | object {obj:<8} | "
+            f"hump jolt {jolt:<8} | flags {' '.join(flags).upper() if flags else '-':<18} | "
+            f"errors {' '.join(errs) if errs else '-'}")
 
 
 FLAG_NAMES = ("error", "wifi_loss", "low_batt", "drop", "hump", "bc_err")
@@ -139,7 +180,10 @@ def summary(f: dict) -> dict:
         "jolt": None if jolt_steps == HUMP_H_INVALID else round(jolt_steps * JOLT_STEP_G, 2),
         "jolt_capped": jolt_steps != HUMP_H_INVALID and jolt_steps >= JOLT_MAX,
         "bc_dir": BC_DIRS[f["bc_dir"]],
+        "bc_text": f.get("bc_text", ""),
         "flags": {n: bool(f[n]) for n in FLAG_NAMES},
+        "errors": {name: bool(f.get("errors", 0) & bit) for bit, name, _ in ERR_FLAGS},
+        "error_list": err_names(f.get("errors", 0)),
     }
 
 

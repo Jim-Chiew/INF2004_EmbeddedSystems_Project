@@ -4,11 +4,16 @@
  * requirement: Minimum-Bit Data Representation). Plain C, constants only.
  * Every buddy includes this file; nobody invents their own bit positions.
  *
- * Frame on the wire = 1 version byte + 9 payload bytes = 10 bytes.
+ * Frame on the wire = 1 version byte + 9 payload bytes of bit fields
+ * + 1 error-flag byte + 1 text-length byte + that many characters of decoded
+ * barcode text = 12 to 24 bytes.
  * The payload is a little-endian bit string: bit 0 is the least significant
  * bit of payload byte 0, bit 8 the least significant bit of byte 1, and so on.
  * (Up to version 1 it was 8 bytes and fitted one 64-bit word; version 2 added
- * the object length and the payload outgrew a single word.)
+ * the object length and the payload outgrew a single word; version 3 appended
+ * the error flags and the barcode text, which do not fit in the bit block --
+ * the bit positions below did not move, so a reader of bytes 1..9 is
+ * unchanged.)
  *
  *   bits   field          size  unit / step           valid     invalid
  *   0-2    state            3   code 0-7              0-7       -
@@ -54,10 +59,27 @@
 
 #include <stdint.h>
 
-#define DL_VERSION          2u     /* first byte of every frame.  1 = the
-                                    * 9-byte frame without the object length */
-#define DL_PAYLOAD_BYTES    9u
-#define DL_FRAME_BYTES      10u    /* version byte + payload */
+#define DL_VERSION          3u     /* first byte of every frame.  1 = the
+                                    * 9-byte frame without the object length,
+                                    * 2 = the 10-byte frame without the error
+                                    * flags and the barcode text */
+#define DL_PAYLOAD_BYTES    9u     /* the bit-field block: bytes 1..9 */
+
+/* After the bit block come the two things that cannot go in it: the error
+ * flags (one bit each, so a byte of its own) and the decoded barcode text
+ * (ASCII, as long as the code the camera read).
+ *   byte 10     error flags, DL_ERRF_* below
+ *   byte 11     how many characters of barcode text follow, 0..DL_BC_TEXT_MAX
+ *   bytes 12..  that text, ASCII, no terminator ('A', 'L', '123'...)
+ * The text is the only thing that makes a frame vary in length: every field
+ * before it is always at the same offset, and a frame with no code read yet
+ * is DL_HEAD_BYTES long. */
+#define DL_ERRORS_BYTE      10u    /* index of the error-flag byte */
+#define DL_BC_LEN_BYTE      11u    /* index of the text-length byte */
+#define DL_HEAD_BYTES       12u    /* version + payload + flags + length byte */
+#define DL_BC_TEXT_MAX      12u    /* longest code (subsystem1.h S1_BC_TEXT_MAX) */
+#define DL_FRAME_MIN_BYTES  DL_HEAD_BYTES
+#define DL_FRAME_MAX_BYTES  (DL_HEAD_BYTES + DL_BC_TEXT_MAX)
 
 #define DL_BITS_PER_BYTE    8u
 
@@ -167,6 +189,24 @@ typedef enum
     DL_LINE_CROSSING = 3
 } dl_line_t;
 
+/* ---- error flags (byte DL_ERRORS_BYTE), one bit each ----
+ * What the car's error indicator is showing: the SAME bit values the RGB LEDs
+ * and the USB status line use (task_telemetry.c ERR_*), so nothing is
+ * translated on the way to the wire.  Any number of them can be set at once.
+ * They say why the car has stopped or what is wrong with it; the status bits
+ * inside the bit block (error, wifi_loss, low_batt, drop, hump, bc_err) stay
+ * where they are and keep their old meanings. */
+#define DL_ERRF_SAFETY      0x01u  /* lifted, overturned, or the e-stop latched */
+#define DL_ERRF_MOTOR       0x02u  /* the wheel encoders never started */
+#define DL_ERRF_IMU         0x04u  /* IMU missing, or its reads keep failing */
+#define DL_ERRF_CAL         0x08u  /* IMU calibration failed */
+#define DL_ERRF_BARCODE     0x10u  /* the last barcode pass did not decode */
+#define DL_ERRF_NET         0x20u  /* WiFi / broker was down when the frame was
+                                    * built: the frame waits in the queue and
+                                    * still says so when the link comes back */
+#define DL_ERRF_OBSTACLE    0x40u  /* something within S6_STOP_MM ahead */
+#define DL_ERRF_ALL         0x7Fu  /* all of the above; bit 7 spare, sent as 0 */
+
 /* ---- command sent to robocar/car1/cmd: one byte (proposed) ---- */
 #define DL_CMD_BYTES          1u
 #define DL_CMD_START          1u
@@ -195,7 +235,13 @@ _Static_assert(DL_OBJ_SHIFT     == DL_NEXT(DL_SEQ),       "object length follows
 _Static_assert(DL_SPARE_SHIFT   == DL_NEXT(DL_OBJ),       "spare follows object length");
 _Static_assert(DL_NEXT(DL_SPARE) == DL_TOTAL_BITS,        "frame is exactly 72 bits");
 _Static_assert(DL_TOTAL_BITS == 8u * DL_PAYLOAD_BYTES,    "payload size matches bits");
-_Static_assert(DL_FRAME_BYTES == DL_PAYLOAD_BYTES + 1u,   "frame = version + payload");
+_Static_assert(DL_ERRORS_BYTE == DL_PAYLOAD_BYTES + 1u,   "error flags follow the bit block");
+_Static_assert(DL_BC_LEN_BYTE == DL_ERRORS_BYTE + 1u,     "text length follows the flags");
+_Static_assert(DL_HEAD_BYTES  == DL_BC_LEN_BYTE + 1u,     "the text starts after the length");
+_Static_assert(DL_FRAME_MAX_BYTES == DL_HEAD_BYTES + DL_BC_TEXT_MAX, "longest frame");
+_Static_assert(DL_ERRF_ALL == (DL_ERRF_SAFETY | DL_ERRF_MOTOR | DL_ERRF_IMU |
+                               DL_ERRF_CAL | DL_ERRF_BARCODE | DL_ERRF_NET |
+                               DL_ERRF_OBSTACLE), "DL_ERRF_ALL holds every flag");
 
 /* the invalid codes and limits must fit the field widths */
 _Static_assert(DL_SPEED_INVALID  <= (1u << DL_SPEED_BITS) - 1u,  "speed invalid fits");

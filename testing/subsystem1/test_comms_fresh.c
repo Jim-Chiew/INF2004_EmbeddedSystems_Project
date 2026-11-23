@@ -19,7 +19,10 @@ static telemetry_sample_t sent_flags(void)
     telemetry_sample_t s = {0}, d;
     s_in_tail = s_in_head;                       /* empty the inbox first */
     (void)comms_send(&s);
-    (void)telemetry_unpack(s_inbox[(uint8_t)((s_in_head + INBOX_N - 1u) % INBOX_N)].data, DL_FRAME_BYTES, &d);
+    {   /* the frame length varies with the barcode text, so use the slot's own */
+        uint8_t k = (uint8_t)((s_in_head + INBOX_N - 1u) % INBOX_N);
+        (void)telemetry_unpack(s_inbox[k].data, s_inbox[k].len, &d);
+    }
     s_in_tail = s_in_head;
     return d;
 }

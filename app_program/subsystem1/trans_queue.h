@@ -5,7 +5,8 @@
 #include "data_layout.h"
 
 #define TQ_CAPACITY   100u
-#define TQ_MSG_MAX    DL_FRAME_BYTES   /* the binary frame (10 bytes, version 2) */
+#define TQ_MSG_MAX    DL_FRAME_MAX_BYTES  /* the longest binary frame (24 bytes,
+                                             version 3: a full barcode code) */
 
 #define TQ_OK              0
 #define TQ_DROPPED_OLDEST  1

@@ -12,7 +12,10 @@ static telemetry_sample_t last(void)
 {
     telemetry_sample_t d;
     uint8_t t = s_in_tail;
-    (void)telemetry_unpack(s_inbox[(uint8_t)((s_in_head + INBOX_N - 1u) % INBOX_N)].data, DL_FRAME_BYTES, &d);
+    {   /* the frame length varies with the barcode text, so use the slot's own */
+        uint8_t k = (uint8_t)((s_in_head + INBOX_N - 1u) % INBOX_N);
+        (void)telemetry_unpack(s_inbox[k].data, s_inbox[k].len, &d);
+    }
     (void)t;
     return d;
 }

@@ -1,6 +1,6 @@
 /*
- * telemetry.h -- Buddy 1. Packs one sample into the 10-byte binary frame
- * (layout in data_layout.h) and reads it back. Plain C, no kernel calls.
+ * telemetry.h -- Buddy 1. Packs one sample into the binary frame (12 to 24
+ * bytes, layout in data_layout.h) and reads it back. Plain C, no kernel calls.
  * Tasks keep natural-width values; packing happens only here, at send time.
  */
 #ifndef TELEMETRY_H
@@ -32,15 +32,29 @@ typedef struct {
     uint8_t  seq;          /* 0-15, set by comms          */
     uint8_t  obj_len;      /* measured object length, cm 0-62,
                               DL_OBJ_NONE (63) = none measured yet */
+    /* Appended in frame version 3.  New fields go at the END: the tests and
+       the frame builder set the ones above positionally. */
+    uint8_t  errors;       /* DL_ERRF_* bitmap: every error the indicator shows */
+    char     bc_text[DL_BC_TEXT_MAX + 1];
+                           /* the decoded barcode code itself, '\0' ended, ""
+                              when nothing has been read.  Only printable
+                              characters go on the wire; the length is worked
+                              out from the string, so there is no second field
+                              to keep in step. */
 } telemetry_sample_t;
 
 #define TELEM_ANGLE_INVALID  INT16_MIN   /* "no tilt/roll reading" */
 
-/* Write DL_FRAME_BYTES bytes into out. Returns TELEM_OK or TELEM_ERR_*. */
-int telemetry_pack(const telemetry_sample_t *s, uint8_t *out, uint32_t size);
+/* Write one frame into out (DL_HEAD_BYTES plus the barcode text, so
+ * DL_FRAME_MIN_BYTES..DL_FRAME_MAX_BYTES).  *len, if given, is set to how many
+ * bytes were written -- the caller must publish exactly that many, since the
+ * length varies with the text.  Returns TELEM_OK or TELEM_ERR_*. */
+int telemetry_pack(const telemetry_sample_t *s, uint8_t *out, uint32_t size,
+                   uint32_t *len);
 
 /* Read a frame back (PC tools and tests). Returns TELEM_OK or TELEM_ERR_*;
- * a wrong version byte or length gives TELEM_ERR_ARG. */
+ * a wrong version byte, a length that does not match the text-length byte, or
+ * a text longer than DL_BC_TEXT_MAX gives TELEM_ERR_ARG. */
 int telemetry_unpack(const uint8_t *in, uint32_t len, telemetry_sample_t *s);
 
 /* One command byte -> DL_CMD_START/STOP/RESET, or 0 if not valid. */

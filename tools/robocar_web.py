@@ -13,9 +13,11 @@ The page is in two halves:
 
   CURRENT CONDITIONS -- the newest telemetry frame as tiles: run state, speed, heading and
     compass point, line position, distance ahead, the measured object length, pitch and roll,
-    hump jolt, the barcode direction and every status flag (error, barcode error, hump,
-    dropped, Wi-Fi loss, low battery), plus the latest barcode / obstacle / hump message and
-    a table of every field in the frame.
+    hump jolt, the decoded barcode code and the direction it commands, every status flag
+    (error, barcode error, hump, dropped, Wi-Fi loss, low battery) and all seven error flags
+    (safety, motor, IMU, calibration, barcode, network, obstacle -- the same ones the car's
+    RGB LEDs show), plus the latest barcode / obstacle / hump message and a table of every
+    field in the frame.
   RAW LOG -- every message in order with its hex, filters per topic, pause / clear / save.
 
 The frames come from robocar/car1/telemetry, which the car publishes only while
@@ -261,9 +263,10 @@ button.halt{background:var(--t-crit);border-color:var(--crit)}
 .tiles{display:grid;grid-template-columns:repeat(12,1fr);gap:10px}
 .tile{grid-column:span 3;min-width:0}
 .w6{grid-column:span 6}
+.w12{grid-column:span 12}
 .t2{grid-column:span 2}
-@media (max-width:980px){.tile{grid-column:span 6}.w6{grid-column:span 12}.t2{grid-column:span 4}}
-@media (max-width:560px){.tile,.w6{grid-column:span 12}.t2{grid-column:span 6}}
+@media (max-width:980px){.tile{grid-column:span 6}.w6,.w12{grid-column:span 12}.t2{grid-column:span 4}}
+@media (max-width:560px){.tile,.w6,.w12{grid-column:span 12}.t2{grid-column:span 6}}
 .k{color:var(--muted);font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;font-weight:650}
 .v{font-size:23px;font-weight:650;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .v .u{font-size:13px;color:var(--ink2);font-weight:500;margin-left:4px}
@@ -271,6 +274,7 @@ button.halt{background:var(--t-crit);border-color:var(--crit)}
 .hero .v .u{font-size:15px}
 .s{color:var(--ink2);font-size:12px;margin-top:3px}
 .s.n{color:var(--muted)}
+.s code{font:12px var(--mono);color:var(--ink2)}
 .sev{display:inline-flex;gap:5px;align-items:center;font-weight:600;color:var(--ink)}
 #cond.stale{opacity:.48}
 /* marks: 2px lines, >=8px end dot, a 10% area wash, hairline baseline */
@@ -404,9 +408,9 @@ td.rw{color:var(--muted);font-family:var(--mono);font-size:12px;font-variant-num
     <div class="s" id="sJolt">peak since the previous frame &middot; 0 = no hump</div>
   </div>
   <div class="card tile">
-    <div class="k">Barcode direction</div>
-    <div class="v" style="font-size:19px" id="vBc">&ndash;</div>
-    <div class="s" id="sBc">the last LEFT / RIGHT / FORWARD the car read</div>
+    <div class="k">Barcode code</div>
+    <div class="v" id="vBc">&ndash;</div>
+    <div class="s" id="sBc">the decoded code, carried in every frame</div>
   </div>
   <div class="card tile w6">
     <div class="k">Status flags</div>
@@ -419,6 +423,19 @@ td.rw{color:var(--muted);font-family:var(--mono);font-size:12px;font-variant-num
       <span class="chip c-warn" id="fBatt" title="the battery is not measured on this car, so this is always clear"><span class="dot"></span>Low battery</span>
     </div>
     <div class="s">lit = set in the newest frame. None of them stops the car.</div>
+  </div>
+  <div class="card tile w12">
+    <div class="k">Error flags &mdash; what the car's error LEDs are showing</div>
+    <div class="chips">
+      <span class="chip c-crit" id="eSafety" title="lifted, overturned, or the e-stop is latched (red LED)"><span class="dot"></span>Safety stop</span>
+      <span class="chip c-crit" id="eMotor" title="the wheel encoders never started (magenta LED)"><span class="dot"></span>Motor</span>
+      <span class="chip c-warn" id="eImu" title="IMU missing, or its reads keep failing (yellow LED)"><span class="dot"></span>IMU</span>
+      <span class="chip c-warn" id="eCal" title="IMU calibration failed (white LED)"><span class="dot"></span>Calibration</span>
+      <span class="chip c-serious" id="eBarcode" title="the last barcode pass did not decode (cyan LED)"><span class="dot"></span>Barcode</span>
+      <span class="chip c-warn" id="eNet" title="WiFi or the broker was down when the car built this frame (blue LED)"><span class="dot"></span>Network</span>
+      <span class="chip c-accent" id="eObstacle" title="something within the stop distance ahead: not a fault, but it is why the car waits (green LED)"><span class="dot"></span>Obstacle</span>
+    </div>
+    <div class="s">the same seven flags as the RGB LEDs on GP18 and the <code>err</code> field of the USB status line, now in the frame itself</div>
   </div>
 </div>
 
@@ -509,6 +526,8 @@ const ROWS = [
   ["Object length",     m => m.obj_len == null ? "none measured yet" : m.obj_len + " cm", "obj_len"],
   ["Hump jolt",         m => m.jolt == null ? "n/a" : (m.jolt_capped ? "≥" : "") + m.jolt.toFixed(2) + " g", "hump_h"],
   ["Barcode direction", m => m.bc_dir,                                                "bc_dir"],
+  ["Barcode code",      m => m.bc_text || "none read yet",                            null],
+  ["Error flags",       m => m.error_list.length ? m.error_list.join(", ") : "none",   "errors"],
   ["Sequence",          m => "#" + m.seq,                                             "seq"],
   ["Error / fault",     m => yn(m.flags.error),                                       "error"],
   ["Barcode error",     m => yn(m.flags.bc_err),                                      "bc_err"],
@@ -571,13 +590,20 @@ function renderTel(ev){
   $("sJolt").textContent = m.jolt === 0 ? "no hump since the previous frame"
                                         : "peak since the previous frame · 0–2.56 g";
 
-  $("vBc").textContent = m.bc_dir === "-" ? "none" : m.bc_dir;
-  $("sBc").textContent = m.bc_dir === "-" ? "no LEFT / RIGHT / FORWARD code read yet"
-                                          : "the last direction the car read (a U-turn reads as none)";
+  $("vBc").textContent = m.bc_text || "none";
+  $("sBc").textContent = !m.bc_text
+    ? "no code read in this run yet"
+    : (m.bc_dir === "-" ? "commands nothing, or a U-turn (the 2-bit direction field has no code for it)"
+                        : "commands " + m.bc_dir);
 
   for (const [id, key] of [["fError", "error"], ["fBcErr", "bc_err"], ["fHump", "hump"],
                            ["fDrop", "drop"], ["fWifi", "wifi_loss"], ["fBatt", "low_batt"]]){
     $(id).classList.toggle("on", m.flags[key]);
+  }
+  for (const [id, key] of [["eSafety", "SAFETY"], ["eMotor", "MOTOR"], ["eImu", "IMU"],
+                           ["eCal", "CAL"], ["eBarcode", "BARCODE"], ["eNet", "NET"],
+                           ["eObstacle", "OBSTACLE"]]){
+    $(id).classList.toggle("on", m.errors[key]);
   }
 
   $("frameHex").textContent = ev.hex;

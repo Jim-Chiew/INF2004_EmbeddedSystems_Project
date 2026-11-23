@@ -20,17 +20,31 @@ F = [("state", 0, 3), ("error", 3, 1), ("wifi_loss", 4, 1), ("low_batt", 5, 1), 
      ("seq", 60, 4), ("obj_len", 64, 6)]
 INVALID = {"speed": 63, "dist": 63, "dir": 511, "hump_jolt": 255, "tilt": 511, "roll": 511}
 NONE = {"obj_len": 63}        # DL_OBJ_NONE: nothing measured yet (0 cm is a real answer)
-VERSION, FRAME_BYTES = 2, 10  # data_layout.h DL_VERSION / DL_FRAME_BYTES
+VERSION = 3                   # data_layout.h DL_VERSION
+PAYLOAD_BYTES = 9             # the bit-field block
+ERRORS_BYTE, BC_LEN_BYTE, HEAD_BYTES, BC_TEXT_MAX = 10, 11, 12, 12
+# byte 10, one bit each -- data_layout.h DL_ERRF_*
+ERRF = [(0x01, "SAFETY"), (0x02, "MOTOR"), (0x04, "IMU"), (0x08, "CAL"),
+        (0x10, "BARCODE"), (0x20, "NET"), (0x40, "OBSTACLE")]
 
 
 def decode(frame: bytes):
-    if len(frame) != FRAME_BYTES:
-        raise ValueError("frame is %d bytes, expected %d" % (len(frame), FRAME_BYTES))
+    if len(frame) < HEAD_BYTES:
+        raise ValueError("frame is %d bytes, expected at least %d" % (len(frame), HEAD_BYTES))
     if frame[0] != VERSION:
         raise ValueError("unknown version byte %d, expected %d" % (frame[0], VERSION))
-    w = int.from_bytes(frame[1:], "little")
-    v = {n: (w >> s) & ((1 << b) - 1) for n, s, b in F}
+    n = frame[BC_LEN_BYTE]
+    if n > BC_TEXT_MAX:
+        raise ValueError("barcode text length %d, at most %d" % (n, BC_TEXT_MAX))
+    if len(frame) != HEAD_BYTES + n:
+        raise ValueError("frame is %d bytes, but its length byte says %d (%d bytes)"
+                         % (len(frame), n, HEAD_BYTES + n))
+    w = int.from_bytes(frame[1:1 + PAYLOAD_BYTES], "little")
+    v = {n2: (w >> s) & ((1 << b) - 1) for n2, s, b in F}
     out = dict(v)
+    errs = [name for bit, name in ERRF if frame[ERRORS_BYTE] & bit]
+    out["errors"] = " ".join(errs) if errs else "-"
+    out["code"] = frame[HEAD_BYTES:].decode("ascii", errors="replace") or "-"
     for k, bad in INVALID.items():
         if v[k] == bad:
             out[k] = "invalid"
@@ -46,13 +60,18 @@ def decode(frame: bytes):
 
 def show(frame):
     d = decode(frame)
-    return " ".join("%s=%s" % (k, d[k]) for k, _, _ in F)
+    bits = " ".join("%s=%s" % (k, d[k]) for k, _, _ in F)
+    # the two fields that are not bit fields: the error flags and the code
+    return "%s errors=%s code=%s" % (bits, d["errors"], d["code"])
 
 
 def selftest():
-    a = bytes([0x02, 0x01, 0x19, 0x00, 0xB5, 0x00, 0xD0, 0xA2, 0x05, 0x3F])
-    b = bytes([0x02, 0xFF, 0xBE, 0xF7, 0xCF, 0x02, 0xA2, 0x05, 0xF0, 0x3E])
-    da, db = decode(a), decode(b)
+    a = bytes([0x03, 0x01, 0x19, 0x00, 0xB5, 0x00, 0xD0, 0xA2, 0x05, 0x3F, 0x00, 0x00])
+    b = bytes([0x03, 0xFF, 0xBE, 0xF7, 0xCF, 0x02, 0xA2, 0x05, 0xF0, 0x3E, 0x00, 0x00])
+    c = bytes([0x03, 0x01, 0x19, 0x00, 0xB5, 0x00, 0xD0, 0xA2, 0x05, 0x3F, 0x7F, 0x01, 0x41])
+    da, db, dc = decode(a), decode(b), decode(c)
+    assert (dc["errors"], dc["code"]) == ("SAFETY MOTOR IMU CAL BARCODE NET OBSTACLE", "A"), dc
+    assert (da["errors"], da["code"]) == ("-", "-"), da
     assert (da["state"], da["speed"], da["dist"], da["dir"], da["tilt"], da["roll"], da["seq"], da["obj_len"]) == \
         ("LINE_FOLLOWING", 25, 32, 90, 0, 0, 0, "none"), da
     assert (db["state"], db["speed"], db["dist"], db["dir"], db["hump_jolt"], db["tilt"], db["roll"], db["seq"], db["obj_len"]) == \

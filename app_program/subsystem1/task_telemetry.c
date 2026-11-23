@@ -15,7 +15,7 @@
  *	    every code that decodes is beeped out on the buzzer (GP22): LEFT one
  *	    long beep, RIGHT two short, FORWARD three, any other letter one
  *	    short lower beep (beeper.h)
- *	Every S1_TELEMETRY_MS (200 ms): one 10-byte frame to
+ *	Every S1_TELEMETRY_MS (200 ms): one frame of 12 to 24 bytes to
  *	robocar/car1/telemetry (layout in data_layout.h) -- built every time,
  *	and PUBLISHED while S1_PUBLISH_TELEMETRY is 1 (subsystem1.h; 1 as set,
  *	so the broker gets the frames as well as the events).  Every field comes
@@ -36,6 +36,15 @@
  *	  obj_len    length of the object the servo last measured, cm (S6;
  *	             63 = none measured yet, and after every RESET / new run)
  *	  low_batt   0: the battery is not measured
+ *	  errors     every error the indicator below is showing, one bit each
+ *	             (DL_ERRF_*): safety stop, motor, IMU, calibration, barcode,
+ *	             network, obstacle -- the same seven the RGB LEDs and the
+ *	             "err" field of the status line show
+ *	  bc_text    the decoded barcode code itself ("A", "D", "HELLO"), held
+ *	             until the next read or the next run, so the frame says WHICH
+ *	             code was read and not only the direction it commands; empty
+ *	             while nothing has been read and after a pass that failed.
+ *	             It is the only part of the frame that varies in length
  *	  seq, drop, wifi_loss are filled in by the comms engine.
  *	Every S1_STATUS_MS (250 ms): one status line on the USB console.
  *	Every 100 ms: the error indicator, the Robo Pico's two RGB LEDs on GP18:
@@ -83,15 +92,23 @@ LOCAL struct {
 /* ------------------------------------------------------------------ */
 /* Error indicator: RGB LEDs on GP18                                    */
 /* ------------------------------------------------------------------ */
-/* The bit values are just labels; err_colours[] below sets which error wins
-   the LED when several are active. */
-#define ERR_SAFETY	0x01
-#define ERR_MOTOR	0x02
-#define ERR_IMU		0x04
-#define ERR_CAL		0x08
-#define ERR_BARCODE	0x10
-#define ERR_NET		0x20
-#define ERR_OBSTACLE	0x40
+/* These are the frame's error-flag bits (data_layout.h DL_ERRF_*), so the
+   lamps, the status line and the telemetry frame all use one set of values and
+   nothing is translated on the way to the broker.  The values themselves are
+   just labels; err_colours[] below sets which error wins the LED when several
+   are active. */
+#define ERR_SAFETY	DL_ERRF_SAFETY
+#define ERR_MOTOR	DL_ERRF_MOTOR
+#define ERR_IMU		DL_ERRF_IMU
+#define ERR_CAL		DL_ERRF_CAL
+#define ERR_BARCODE	DL_ERRF_BARCODE
+#define ERR_NET		DL_ERRF_NET
+#define ERR_OBSTACLE	DL_ERRF_OBSTACLE
+
+/* The frame carries the decoded code itself, so it must have room for the
+   longest one subsystem 5 can hand over. */
+_Static_assert(S1_BC_TEXT_MAX <= (INT)DL_BC_TEXT_MAX,
+	       "the frame's barcode text must hold the longest decoded code");
 
 #define LED_UPDATE_MS	100		/* how often the indicator is refreshed */
 #define LED_STEP_MS	500		/* several errors: each colour shown this long */
@@ -365,6 +382,7 @@ LOCAL void check_run_reset(void)
 		s1.run_count = nav.run_count;
 		s1.bc_cmd = S1_BC_NONE;
 		s1.bc_seen = FALSE;
+		s1.bc_text[0] = '\0';		/* the frame reports no code again */
 		s1.obj_len_cm = (UB)DL_OBJ_NONE;	/* no object measured in this run */
 		s1.bc_err_pending = FALSE;
 		s1.hump_pending = FALSE;
@@ -572,6 +590,21 @@ LOCAL void build_sample(telemetry_sample_t *s, const NAV_STATUS *nav,
 	/* The object's measured length holds its value between scans; it reads
 	   DL_OBJ_NONE until the first scan of the run (see check_run_reset). */
 	s->obj_len = s1.obj_len_cm;
+
+	/* Every error the indicator is showing, as one bitmap (DL_ERRF_*).  It is
+	   refreshed by error_led_update() every LED_UPDATE_MS, which runs earlier
+	   in the same task pass, so it is at most 100 ms old here. */
+	s->errors = (UB)(s1.errors & DL_ERRF_ALL);
+
+	/* The decoded code itself.  The 2-bit bc_dir field only has room for the
+	   DIRECTION a code commands (and not even all four: a U-turn goes out as
+	   none), so the text is what says WHICH code was read -- the same string
+	   the barcode topic carries, held until the next read or the next run.
+	   A pass that failed sends no text: bc_err and ERR_BARCODE say why. */
+	if (s1.bc_seen && !s1.bc_last_failed) {
+		strncpy(s->bc_text, s1.bc_text, DL_BC_TEXT_MAX);
+		s->bc_text[DL_BC_TEXT_MAX] = '\0';
+	}
 
 	if (imu->ok && imu->valid) {
 		INT steps = round_i(s1.jolt_pending_g * 1000.0f / (float)DL_HUMP_JOLT_STEP_MG);

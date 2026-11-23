@@ -295,6 +295,7 @@ int comms_send(const telemetry_sample_t *in)
     static uint32_t last_lost = 0u;
     telemetry_sample_t s;
     uint32_t lost;
+    uint32_t packed = 0u;      /* frame length: it varies with the barcode text */
     uint8_t h;
     uint8_t next;
     int n;
@@ -318,12 +319,12 @@ int comms_send(const telemetry_sample_t *in)
     last_lost = lost;
     s.wifi_loss = s_wifi_up ? 0u : 1u;   /* Wi-Fi radio only (broker down is not Wi-Fi loss); status, never a fault */
     s.seq = (uint8_t)(seq & DL_SEQ_MAX);
-    n = telemetry_pack(&s, s_inbox[h].data, TQ_MSG_MAX);
+    n = telemetry_pack(&s, s_inbox[h].data, TQ_MSG_MAX, &packed);
     if (n != TELEM_OK) {
         return n;                        /* value out of range: not sent */
     }
     seq++;
-    s_inbox[h].len = (uint16_t)DL_FRAME_BYTES;
+    s_inbox[h].len = (uint16_t)packed;   /* DL_HEAD_BYTES + the code's length */
     PORT_MB();                           /* message first, then announce it */
     s_in_head = next;
     return COMMS_OK;

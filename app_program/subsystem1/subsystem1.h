@@ -8,7 +8,7 @@
  *	  - comms_task() runs inside the kernel's WiFi task (cyw43_utk_task),
  *	    the only task allowed to touch lwIP / MQTT (TEAM.md section 3);
  *	  - telemetry_task (this subsystem's own task) feeds it: every 200 ms
- *	    a 10-byte telemetry frame, each barcode text, each obstacle
+ *	    a telemetry frame, each barcode text, each obstacle
  *	    measurement, and it hands the
  *	    START / STOP / RESET commands it receives to navigation (IF-07).
  *	It also prints the status line on the USB console every 250 ms.
@@ -32,7 +32,7 @@
 /* What goes to the broker.  The DECODED BARCODE TEXT (robocar/car1/barcode,
    one message per code read, e.g. "A LEFT") is always published.  These two
    switch the rest on or off:
-     S1_PUBLISH_TELEMETRY  1 = the 10-byte status frame on
+     S1_PUBLISH_TELEMETRY  1 = the binary status frame (12-24 bytes) on
                                robocar/car1/telemetry every S1_TELEMETRY_MS
      S1_PUBLISH_OBSTACLE   1 = one line per obstacle the car stops for, on
                                robocar/car1/obstacle, once subsystem 6 has

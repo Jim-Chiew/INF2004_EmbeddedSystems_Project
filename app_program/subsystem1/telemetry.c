@@ -1,5 +1,6 @@
 /* telemetry.c -- Buddy 1. Pack/unpack with masks and shifts (no C bit-fields). */
 #include "telemetry.h"
+#include <string.h>
 
 /* Put a value into the payload / read it back (shift and width come from
  * data_layout.h).  The payload is a little-endian bit string: bit n lives in
@@ -39,6 +40,20 @@ static uint32_t get(const uint8_t *p, uint32_t shift, uint32_t bits)
     return v;
 }
 
+/* How much of s->bc_text goes on the wire: up to DL_BC_TEXT_MAX characters,
+ * stopping at the '\0' or at anything that is not printable ASCII.  A frame is
+ * never refused over its text -- an odd character just ends it, because a
+ * dropped frame would cost far more than a truncated code. */
+static uint32_t bc_len(const char *text)
+{
+    uint32_t n = 0u;
+
+    while ((n < DL_BC_TEXT_MAX) && (text[n] >= 0x20) && (text[n] < 0x7F)) {
+        n++;
+    }
+    return n;
+}
+
 static int angle_ok(int16_t a)
 {
     return (a == TELEM_ANGLE_INVALID) || ((a >= DL_TILT_MIN_DEG) && (a <= DL_TILT_MAX_DEG));
@@ -74,12 +89,16 @@ static int fields_ok(const telemetry_sample_t *s)
     return angle_ok(s->tilt) && angle_ok(s->roll);
 }
 
-int telemetry_pack(const telemetry_sample_t *s, uint8_t *out, uint32_t size)
+int telemetry_pack(const telemetry_sample_t *s, uint8_t *out, uint32_t size,
+                   uint32_t *len)
 {
     uint8_t *p;
-    uint32_t i;
+    uint32_t i, n;
 
-    if ((!s) || (!out) || (size < DL_FRAME_BYTES)) { return TELEM_ERR_ARG; }
+    if ((!s) || (!out)) { return TELEM_ERR_ARG; }
+
+    n = bc_len(s->bc_text);
+    if (size < (DL_HEAD_BYTES + n)) { return TELEM_ERR_ARG; }
 
     if (!fields_ok(s)) { return TELEM_ERR_RANGE; }
 
@@ -104,14 +123,30 @@ int telemetry_pack(const telemetry_sample_t *s, uint8_t *out, uint32_t size)
     put(p, angle_enc(s->roll), DL_ROLL_SHIFT, DL_ROLL_BITS);
     put(p, s->seq, DL_SEQ_SHIFT, DL_SEQ_BITS);
     put(p, s->obj_len, DL_OBJ_SHIFT, DL_OBJ_BITS);
+
+    /* The two appended fields (version 3): the error flags, then the decoded
+       barcode code with its length in front of it. */
+    out[DL_ERRORS_BYTE] = (uint8_t)(s->errors & DL_ERRF_ALL);
+    out[DL_BC_LEN_BYTE] = (uint8_t)n;
+    if (n != 0u) {
+        memcpy(&out[DL_HEAD_BYTES], s->bc_text, n);
+    }
+    if (len) { *len = DL_HEAD_BYTES + n; }
     return TELEM_OK;
 }
 
 int telemetry_unpack(const uint8_t *in, uint32_t len, telemetry_sample_t *s)
 {
     const uint8_t *p;
+    uint32_t n;
 
-    if ((!in) || (!s) || (len != DL_FRAME_BYTES) || (in[0] != DL_VERSION)) {
+    if ((!in) || (!s) || (len < DL_HEAD_BYTES) || (in[0] != DL_VERSION)) {
+        return TELEM_ERR_ARG;
+    }
+    n = in[DL_BC_LEN_BYTE];
+    /* The length byte and the frame's own length must agree, so a truncated
+       or padded frame is refused rather than read as a shorter code. */
+    if ((n > DL_BC_TEXT_MAX) || (len != (DL_HEAD_BYTES + n))) {
         return TELEM_ERR_ARG;
     }
     p = &in[1];
@@ -133,6 +168,12 @@ int telemetry_unpack(const uint8_t *in, uint32_t len, telemetry_sample_t *s)
     s->tilt = angle_dec(get(p, DL_TILT_SHIFT, DL_TILT_BITS));
     s->roll = angle_dec(get(p, DL_ROLL_SHIFT, DL_ROLL_BITS));
     s->obj_len = (uint8_t)get(p, DL_OBJ_SHIFT, DL_OBJ_BITS);
+
+    s->errors = (uint8_t)(in[DL_ERRORS_BYTE] & DL_ERRF_ALL);
+    if (n != 0u) {
+        memcpy(s->bc_text, &in[DL_HEAD_BYTES], n);
+    }
+    s->bc_text[n] = '\0';
     return TELEM_OK;
 }
 

@@ -1,7 +1,7 @@
 # Subsystem 1: WiFi / MQTT communication and telemetry (Buddy 1)
 
 What it does: connects the Pico W to WiFi and an MQTT broker, sends the car's
-state, speed, distance, object length, direction, hump, tilt and roll as one 10-byte binary frame 5 times a second, keeps up to
+state, speed, distance, object length, direction, hump, tilt, roll, the seven error flags and the decoded barcode code as one 12-to-24-byte binary frame 5 times a second, keeps up to
 100 messages when the link is down, and receives START / STOP / RESET commands.
 
 **micro T-Kernel build (this project).** The work is split over two tasks:
@@ -19,7 +19,7 @@ GP19: the Pico W's own LED is on the radio, which no application task may touch.
 
 Message layout (bit positions, units, ranges, invalid codes) is in
 [data_layout.h](data_layout.h). Read that first. Topics: `robocar/car1/telemetry`
-(car to broker, QoS 1, 10-byte binary frame), `robocar/car1/obstacle` (car to
+(car to broker, QoS 1, binary frame of 12 to 24 bytes), `robocar/car1/obstacle` (car to
 broker, one line per servo scan), `robocar/car1/barcode` (car to broker,
 QoS 1, the decoded barcode text as plain ASCII without the `*`s, e.g. `A`, sent once
 per barcode read; the frame only has room for LEFT/RIGHT) and `robocar/car1/cmd`
@@ -39,7 +39,7 @@ per barcode read; the frame only has room for LEFT/RIGHT) and `robocar/car1/cmd`
 | `com_state.c/.h`                              | COM_DISCONNECTED / COM_SYNC / COM_CONNECTED (FR-COM-01, 03, 04)                                   | No, plain C |
 | `status_led.c/.h`                             | LED on or off for a state and time (FR-COM-05, 06)                                                | No, plain C |
 | `data_layout.h`                               | The one shared table: field positions, widths, units, invalid codes, command codes                | No, constants only |
-| `telemetry.c/.h`                              | Packs / unpacks the 10-byte frame and decodes the 1-byte command (FR-COM-07, NFR-RES-03)          | No, plain C |
+| `telemetry.c/.h`                              | Packs / unpacks the binary frame (12 to 24 bytes) and decodes the 1-byte command (FR-COM-07, NFR-RES-03) | No, plain C |
 (`comms_link.c` and `comms_port_sdk.c`, the plain Pico SDK versions, stay in the old LineFollow project.)
 
 ## How the other subsystems use it

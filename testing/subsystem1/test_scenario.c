@@ -33,7 +33,8 @@ static unsigned long g_next_ts = 1;
 static void take_sample(void)
 {
     telemetry_sample_t s;
-    uint8_t buf[DL_FRAME_BYTES];
+    uint8_t buf[DL_FRAME_MAX_BYTES];
+    uint32_t len = 0u;
 
     memset(&s, 0, sizeof s);
     s.state = DL_STATE_LINE_FOLLOWING;
@@ -41,8 +42,8 @@ static void take_sample(void)
     s.dist  = (uint8_t)(g_next_ts % 63u);      /* sample number rides in speed + dist */
     g_next_ts++;
 
-    if (telemetry_pack(&s, buf, sizeof buf) == TELEM_OK) {
-        (void)tq_push(buf, (uint16_t)sizeof buf);
+    if (telemetry_pack(&s, buf, sizeof buf, &len) == TELEM_OK) {
+        (void)tq_push(buf, (uint16_t)len);
     }
 }
 
