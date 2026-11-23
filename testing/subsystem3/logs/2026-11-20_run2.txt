@@ -1,0 +1,2 @@
+﻿[11:25:48.044] # capture started; waiting for the Pico's USB serial port
+[12:55:49.007] # timed out after 90 min

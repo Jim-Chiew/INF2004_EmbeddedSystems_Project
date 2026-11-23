@@ -1,0 +1,62 @@
+{
+  // Build tasks for this folder on its own. Open mtk_car itself in VS Code
+  // (File > Open Folder > mtk_car), then Terminal > Run Build Task (Ctrl+Shift+B).
+  //
+  // The compiler and the Pico SDK are found by build_make/pico_rp2040.mk in
+  // the place the VS Code Pico extension installs them (~/.pico-sdk), so
+  // these tasks set no paths. If yours are elsewhere, either put the
+  // toolchain's bin on PATH or run: make PICO_SDK_PATH=/path/to/pico-sdk
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build car firmware",
+      "detail": "make -j8 -- the image to flash, build_make/*_lwip_mqtt.uf2",
+      "type": "shell",
+      "command": "make",
+      "args": ["-j8"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": ["$gcc"],
+      "group": { "kind": "build", "isDefault": true }
+    },
+    {
+      "label": "Build with on-target tests",
+      "detail": "make TEST=1 -j8 -- adds the subsystemN_test.c checks (*_test.uf2)",
+      "type": "shell",
+      "command": "make",
+      "args": ["TEST=1", "-j8"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": ["$gcc"],
+      "group": "build"
+    },
+    {
+      "label": "Build without WiFi",
+      "detail": "make NET=none MQTT=0 -j8 -- buttons, line following, IMU, barcode, obstacle only",
+      "type": "shell",
+      "command": "make",
+      "args": ["NET=none", "MQTT=0", "-j8"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": ["$gcc"],
+      "group": "build"
+    },
+    {
+      "label": "Clean",
+      "detail": "make clean -- remove every object and image",
+      "type": "shell",
+      "command": "make",
+      "args": ["clean"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "Run the PC tests (no car needed)",
+      "detail": "The decoder and comms tests that run on this machine with gcc",
+      "type": "shell",
+      "command": "sh",
+      "args": ["testing/subsystem5/run_pc_tests.sh"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": ["$gcc"],
+      "group": "test"
+    }
+  ]
+}

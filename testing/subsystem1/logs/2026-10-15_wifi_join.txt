@@ -1,0 +1,12 @@
+[ 30008 ms] link=UP com_state=0
+[ 35003 ms] link=UP com_state=0
+[ 40009 ms] link=UP com_state=0
+[ 45005 ms] link=UP com_state=0
+[ 50000 ms] link=UP com_state=0
+[ 55006 ms] link=UP com_state=0
+[ 60001 ms] link=UP com_state=0
+[ 65007 ms] link=UP com_state=0
+[ 70002 ms] link=UP com_state=0
+[ 75008 ms] link=UP com_state=0
+[ 80004 ms] link=UP com_state=0
+[ 85009 ms] link=UP com_state=0

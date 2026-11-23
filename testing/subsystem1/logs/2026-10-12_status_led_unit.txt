@@ -1,0 +1,8 @@
+[TEST] S1-U40 PASS  solid ON in COM_CONNECTED and COM_SYNC for 10 s (FR-COM-05)
+[TEST] S1-U41 PASS  COM_DISCONNECTED: ON for the first 250 ms
+[TEST] S1-U42 PASS  COM_DISCONNECTED: OFF for the next 250 ms
+[TEST] S1-U43 PASS  pattern repeats every 500 ms
+[TEST] S1-U44 PASS  20 blinks (40 changes) in 10 s = 2 Hz (FR-COM-06)
+[TEST] S1-U45 PASS  50% duty cycle over 10 s
+[TEST] S1-U46 PASS  unknown state: LED off
+ALL TESTS PASSED (0 failed)

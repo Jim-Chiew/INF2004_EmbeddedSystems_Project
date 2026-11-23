@@ -1,0 +1,22 @@
+﻿# Build output. Everything here is produced by "make" and can be deleted.
+#
+# CAREFUL: build_make/mtkernel_3/ is NOT all output. It holds the subdir.mk
+# fragments that tell the build which sources to compile -- those are SOURCE
+# files and must be kept. Only the .o and .d files beside them are output,
+# which is why this file lists patterns rather than that folder.
+*.o
+*.d
+*.elf
+*.map
+*.uf2
+build_make/.build_profile
+build_make/tools/
+
+# The private WiFi and broker settings. Copy config/wifi_secrets.example.h to
+# config/wifi_secrets.h and fill it in; never commit the filled-in one.
+config/wifi_secrets.h
+
+# Editor and OS leftovers
+.DS_Store
+Thumbs.db
+*~

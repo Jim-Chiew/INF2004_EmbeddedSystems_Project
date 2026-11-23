@@ -1,0 +1,16 @@
+[TEST] S1-U01 PASS  queue starts empty, discard counter 0
+[TEST] S1-U02 PASS  peek and ack on an empty queue are refused
+[TEST] S1-U03 PASS  100 messages stored, none dropped (FR-COM-09)
+[TEST] S1-U04 PASS  101st message drops the oldest and counts it (FR-COM-10, FR-COM-11)
+[TEST] S1-U05 PASS  oldest message is now number 2
+[TEST] S1-U06 PASS  discard counter keeps counting
+[TEST] S1-U07 PASS  NULL pointer and zero length are rejected
+[TEST] S1-U08 PASS  257-byte message rejected (NFR-RES-03)
+[TEST] S1-U09 PASS  exactly 256 bytes accepted (NFR-RES-03)
+[TEST] S1-U10 PASS  ack of a message that was already dropped is refused
+[TEST] S1-U11 PASS  a refused ack does not reset the discard counter
+[TEST] S1-U12 PASS  100 messages sent oldest first, in order
+[TEST] S1-U13 PASS  discard counter kept until the last message is acked
+[TEST] S1-U14 PASS  counter reset only after the queue is fully sent (FR-COM-12)
+[TEST] S1-U15 PASS  order is kept when the queue wraps around
+ALL TESTS PASSED (0 failed)

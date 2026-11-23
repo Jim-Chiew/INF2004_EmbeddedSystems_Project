@@ -1,0 +1,46 @@
+{
+  // Settings for opening mtk_car on its own. Nothing here points outside the
+  // folder, so it travels with the project.
+  //
+  // This project builds with make (build_make/), NOT CMake: the kernel is
+  // compiled through the subdir.mk fragments under build_make/mtkernel_3/.
+  // The next two lines stop the CMake Tools extension asking to configure a
+  // project that has no CMakeLists.txt.
+  "cmake.configureOnOpen": false,
+  "cmake.automaticReconfigure": false,
+
+  // IntelliSense: where the headers are. Same include path the build uses
+  // (see INCPATH in build_make/makefile), all of it inside this folder.
+  "C_Cpp.default.includePath": [
+    "${workspaceFolder}/include",
+    "${workspaceFolder}/config",
+    "${workspaceFolder}/kernel/knlinc",
+    "${workspaceFolder}/app_program"
+  ],
+  "C_Cpp.default.cStandard": "gnu11",
+  "C_Cpp.default.defines": [
+    "_PICO_RP2040_",
+    "CNF_SMP=1",
+    "TM_WIFI_CYW43=1",
+    "BOARD_UART0_FREE=1"
+  ],
+
+  // The kernel sources use tabs at 8, which is how the alignment in the
+  // comments and tables was written.
+  "[c]": {
+    "editor.insertSpaces": false,
+    "editor.tabSize": 8
+  },
+
+  // Build outputs: visible, but out of the way of searches.
+  "search.exclude": {
+    "**/build_make/mtkernel_3/**": true,
+    "**/build_make/tools/**": true,
+    "**/*.uf2": true,
+    "**/*.elf": true,
+    "**/*.map": true
+  },
+  "files.associations": {
+    "*.mk": "makefile"
+  }
+}

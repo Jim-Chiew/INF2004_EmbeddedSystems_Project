@@ -1,0 +1,262 @@
+Test: buddy1_mqtt on a Pico W, home WiFi, Mosquitto broker on a Windows laptop
+Date: 2026-10-15
+Procedure: the program runs with a broker; the broker is stopped and restarted
+several times. One sample is taken per second and goes through the offline queue.
+Observed:
+ - First period (13 s to 70 s): broker unreachable (Windows firewall), state
+   DISCONNECTED, queue grows by 1 per second.
+ - Reconnect at about 476 s after a much longer outage: queue was at its limit
+   (94 to 97 of 100), dropped=367, state SYNC. Queue drained (acked rose),
+   state CONNECTED, dropped reset to 0 (FR-COM-09 to 12).
+ - Outage at about 543 s to 604 s (broker stopped for ~1 min): DISCONNECTED,
+   queue grew 1 per second to 61, dropped=0. On reconnect: SYNC, queue drained
+   to 1, CONNECTED, acked rose 1 per second.
+ - Broker stopped again at about 650 s: DISCONNECTED within 1 s.
+Note: excerpts of the serial output. The gaps (70 s to 476 s, 521 s to 550 s)
+are where the serial monitor was closed and reopened.
+------------------------------------------------------------------
+
+[ 13008 ms] wifi=UP mqtt=down state=DISCONNECTED queue=13 acked=0 dropped=0
+[ 14004 ms] wifi=UP mqtt=down state=DISCONNECTED queue=14 acked=0 dropped=0
+[ 15000 ms] wifi=UP mqtt=down state=DISCONNECTED queue=15 acked=0 dropped=0
+[ 16006 ms] wifi=UP mqtt=down state=DISCONNECTED queue=16 acked=0 dropped=0
+[ 17002 ms] wifi=UP mqtt=down state=DISCONNECTED queue=17 acked=0 dropped=0
+[ 18008 ms] wifi=UP mqtt=down state=DISCONNECTED queue=18 acked=0 dropped=0
+[ 19004 ms] wifi=UP mqtt=down state=DISCONNECTED queue=19 acked=0 dropped=0
+[ 20000 ms] wifi=UP mqtt=down state=DISCONNECTED queue=20 acked=0 dropped=0
+[ 21006 ms] wifi=UP mqtt=down state=DISCONNECTED queue=21 acked=0 dropped=0
+[ 22002 ms] wifi=UP mqtt=down state=DISCONNECTED queue=22 acked=0 dropped=0
+[ 23008 ms] wifi=UP mqtt=down state=DISCONNECTED queue=23 acked=0 dropped=0
+[ 24004 ms] wifi=UP mqtt=down state=DISCONNECTED queue=24 acked=0 dropped=0
+[ 25000 ms] wifi=UP mqtt=down state=DISCONNECTED queue=25 acked=0 dropped=0
+[ 26006 ms] wifi=UP mqtt=down state=DISCONNECTED queue=26 acked=0 dropped=0
+[ 26932 ms] MQTT connect started (err=0)
+[ 26932 ms] MQTT status: 256 (0 = connected)
+[ 27003 ms] wifi=UP mqtt=down state=DISCONNECTED queue=27 acked=0 dropped=0
+[ 28009 ms] wifi=UP mqtt=down state=DISCONNECTED queue=28 acked=0 dropped=0
+[ 29005 ms] wifi=UP mqtt=down state=DISCONNECTED queue=29 acked=0 dropped=0
+[ 30001 ms] wifi=UP mqtt=down state=DISCONNECTED queue=30 acked=0 dropped=0
+[ 31007 ms] wifi=UP mqtt=down state=DISCONNECTED queue=31 acked=0 dropped=0
+[ 32003 ms] wifi=UP mqtt=down state=DISCONNECTED queue=32 acked=0 dropped=0
+[ 33009 ms] wifi=UP mqtt=down state=DISCONNECTED queue=33 acked=0 dropped=0
+[ 34005 ms] wifi=UP mqtt=down state=DISCONNECTED queue=34 acked=0 dropped=0
+[ 35001 ms] wifi=UP mqtt=down state=DISCONNECTED queue=35 acked=0 dropped=0
+[ 36007 ms] wifi=UP mqtt=down state=DISCONNECTED queue=36 acked=0 dropped=0
+[ 37003 ms] wifi=UP mqtt=down state=DISCONNECTED queue=37 acked=0 dropped=0
+[ 38008 ms] wifi=UP mqtt=down state=DISCONNECTED queue=38 acked=0 dropped=0
+[ 39004 ms] wifi=UP mqtt=down state=DISCONNECTED queue=39 acked=0 dropped=0
+[ 40000 ms] wifi=UP mqtt=down state=DISCONNECTED queue=40 acked=0 dropped=0
+[ 41006 ms] wifi=UP mqtt=down state=DISCONNECTED queue=41 acked=0 dropped=0
+[ 42002 ms] wifi=UP mqtt=down state=DISCONNECTED queue=42 acked=0 dropped=0
+[ 43008 ms] wifi=UP mqtt=down state=DISCONNECTED queue=43 acked=0 dropped=0
+[ 44004 ms] wifi=UP mqtt=down state=DISCONNECTED queue=44 acked=0 dropped=0
+[ 45000 ms] wifi=UP mqtt=down state=DISCONNECTED queue=45 acked=0 dropped=0
+[ 45443 ms] MQTT connect started (err=0)
+[ 46007 ms] wifi=UP mqtt=down state=DISCONNECTED queue=46 acked=0 dropped=0
+[ 47003 ms] wifi=UP mqtt=down state=DISCONNECTED queue=47 acked=0 dropped=0
+[ 48009 ms] wifi=UP mqtt=down state=DISCONNECTED queue=48 acked=0 dropped=0
+[ 49005 ms] wifi=UP mqtt=down state=DISCONNECTED queue=49 acked=0 dropped=0
+[ 50001 ms] wifi=UP mqtt=down state=DISCONNECTED queue=50 acked=0 dropped=0
+[ 51007 ms] wifi=UP mqtt=down state=DISCONNECTED queue=51 acked=0 dropped=0
+[ 52003 ms] wifi=UP mqtt=down state=DISCONNECTED queue=52 acked=0 dropped=0
+[ 53009 ms] wifi=UP mqtt=down state=DISCONNECTED queue=53 acked=0 dropped=0
+[ 54005 ms] wifi=UP mqtt=down state=DISCONNECTED queue=54 acked=0 dropped=0
+[ 55001 ms] wifi=UP mqtt=down state=DISCONNECTED queue=55 acked=0 dropped=0
+[ 56007 ms] wifi=UP mqtt=down state=DISCONNECTED queue=56 acked=0 dropped=0
+[ 57003 ms] wifi=UP mqtt=down state=DISCONNECTED queue=57 acked=0 dropped=0
+[ 58009 ms] wifi=UP mqtt=down state=DISCONNECTED queue=58 acked=0 dropped=0
+[ 59005 ms] wifi=UP mqtt=down state=DISCONNECTED queue=59 acked=0 dropped=0
+[ 60000 ms] wifi=UP mqtt=down state=DISCONNECTED queue=60 acked=0 dropped=0
+[ 61007 ms] wifi=UP mqtt=down state=DISCONNECTED queue=61 acked=0 dropped=0
+[ 62003 ms] wifi=UP mqtt=down state=DISCONNECTED queue=62 acked=0 dropped=0
+[ 63009 ms] wifi=UP mqtt=down state=DISCONNECTED queue=63 acked=0 dropped=0
+[ 63945 ms] MQTT connect started (err=0)
+[ 64005 ms] wifi=UP mqtt=down state=DISCONNECTED queue=64 acked=0 dropped=0
+[ 65001 ms] wifi=UP mqtt=down state=DISCONNECTED queue=65 acked=0 dropped=0
+[ 66008 ms] wifi=UP mqtt=down state=DISCONNECTED queue=66 acked=0 dropped=0
+[ 67003 ms] wifi=UP mqtt=down state=DISCONNECTED queue=67 acked=0 dropped=0
+[ 68009 ms] wifi=UP mqtt=down state=DISCONNECTED queue=68 acked=0 dropped=0
+[ 69005 ms] wifi=UP mqtt=down state=DISCONNECTED queue=69 acked=0 dropped=0
+[ 70001 ms] wifi=UP mqtt=down state=DISCONNECTED queue=70 acked=0 dropped=0
+---- Closed the serial port COM8 ----
+---- Opened the serial port COM8 ----
+[476003 ms] wifi=UP mqtt=UP state=SYNC queue=94 acked=15 dropped=367
+[477004 ms] wifi=UP mqtt=UP state=SYNC queue=95 acked=15 dropped=367
+[478004 ms] wifi=UP mqtt=UP state=SYNC queue=96 acked=15 dropped=367
+[479005 ms] wifi=UP mqtt=UP state=SYNC queue=97 acked=15 dropped=367
+[480006 ms] wifi=UP mqtt=UP state=SYNC queue=97 acked=16 dropped=367
+[481007 ms] wifi=UP mqtt=UP state=SYNC queue=97 acked=17 dropped=367
+[482008 ms] wifi=UP mqtt=UP state=SYNC queue=70 acked=45 dropped=367
+[483000 ms] wifi=UP mqtt=UP state=SYNC queue=13 acked=103 dropped=367
+[484006 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=116 dropped=0
+[485007 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=117 dropped=0
+[486009 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=118 dropped=0
+[487000 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=119 dropped=0
+[488002 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=120 dropped=0
+[489003 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=121 dropped=0
+[490005 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=122 dropped=0
+[491007 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=123 dropped=0
+[492008 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=124 dropped=0
+[493009 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=125 dropped=0
+[494001 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=126 dropped=0
+[495002 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=127 dropped=0
+[496004 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=128 dropped=0
+[497005 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=129 dropped=0
+[498006 ms] wifi=UP mqtt=UP state=CONNECTED queue=2 acked=129 dropped=0
+[499007 ms] wifi=UP mqtt=UP state=CONNECTED queue=3 acked=129 dropped=0
+[500008 ms] wifi=UP mqtt=UP state=CONNECTED queue=2 acked=131 dropped=0
+[501009 ms] wifi=UP mqtt=UP state=CONNECTED queue=3 acked=131 dropped=0
+[502000 ms] wifi=UP mqtt=UP state=CONNECTED queue=4 acked=131 dropped=0
+[503001 ms] wifi=UP mqtt=UP state=CONNECTED queue=5 acked=131 dropped=0
+[504003 ms] wifi=UP mqtt=UP state=CONNECTED queue=3 acked=134 dropped=0
+[505004 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=137 dropped=0
+[506006 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=138 dropped=0
+[507007 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=139 dropped=0
+[508009 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=140 dropped=0
+[509000 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=141 dropped=0
+[510001 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=142 dropped=0
+[511003 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=143 dropped=0
+[512004 ms] wifi=UP mqtt=UP state=CONNECTED queue=2 acked=143 dropped=0
+[513005 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=145 dropped=0
+[514007 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=146 dropped=0
+[515008 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=147 dropped=0
+[516000 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=148 dropped=0
+[517001 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=149 dropped=0
+[518003 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=150 dropped=0
+[519004 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=151 dropped=0
+[520006 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=152 dropped=0
+[521007 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=153 dropped=0
+---- Closed the serial port COM8 ----
+---- Opened the serial port COM8 ----
+[550002 ms] wifi=UP mqtt=down state=DISCONNECTED queue=7 acked=176 dropped=0
+[551009 ms] wifi=UP mqtt=down state=DISCONNECTED queue=8 acked=176 dropped=0
+[552005 ms] wifi=UP mqtt=down state=DISCONNECTED queue=9 acked=176 dropped=0
+[553000 ms] wifi=UP mqtt=down state=DISCONNECTED queue=10 acked=176 dropped=0
+[554006 ms] wifi=UP mqtt=down state=DISCONNECTED queue=11 acked=176 dropped=0
+[555002 ms] wifi=UP mqtt=down state=DISCONNECTED queue=12 acked=176 dropped=0
+[556008 ms] wifi=UP mqtt=down state=DISCONNECTED queue=13 acked=176 dropped=0
+[557004 ms] wifi=UP mqtt=down state=DISCONNECTED queue=14 acked=176 dropped=0
+[558000 ms] wifi=UP mqtt=down state=DISCONNECTED queue=15 acked=176 dropped=0
+[559006 ms] wifi=UP mqtt=down state=DISCONNECTED queue=16 acked=176 dropped=0
+[560002 ms] wifi=UP mqtt=down state=DISCONNECTED queue=17 acked=176 dropped=0
+[561008 ms] wifi=UP mqtt=down state=DISCONNECTED queue=18 acked=176 dropped=0
+[561633 ms] MQTT connect started (err=0)
+[562005 ms] wifi=UP mqtt=down state=DISCONNECTED queue=19 acked=176 dropped=0
+[563001 ms] wifi=UP mqtt=down state=DISCONNECTED queue=20 acked=176 dropped=0
+[564007 ms] wifi=UP mqtt=down state=DISCONNECTED queue=21 acked=176 dropped=0
+[565003 ms] wifi=UP mqtt=down state=DISCONNECTED queue=22 acked=176 dropped=0
+[566009 ms] wifi=UP mqtt=down state=DISCONNECTED queue=23 acked=176 dropped=0
+[567005 ms] wifi=UP mqtt=down state=DISCONNECTED queue=24 acked=176 dropped=0
+[568001 ms] wifi=UP mqtt=down state=DISCONNECTED queue=25 acked=176 dropped=0
+[569007 ms] wifi=UP mqtt=down state=DISCONNECTED queue=26 acked=176 dropped=0
+[570003 ms] wifi=UP mqtt=down state=DISCONNECTED queue=27 acked=176 dropped=0
+[571009 ms] wifi=UP mqtt=down state=DISCONNECTED queue=28 acked=176 dropped=0
+[572004 ms] wifi=UP mqtt=down state=DISCONNECTED queue=29 acked=176 dropped=0
+[573000 ms] wifi=UP mqtt=down state=DISCONNECTED queue=30 acked=176 dropped=0
+[574007 ms] wifi=UP mqtt=down state=DISCONNECTED queue=31 acked=176 dropped=0
+[575003 ms] wifi=UP mqtt=down state=DISCONNECTED queue=32 acked=176 dropped=0
+[576008 ms] wifi=UP mqtt=down state=DISCONNECTED queue=33 acked=176 dropped=0
+[577004 ms] wifi=UP mqtt=down state=DISCONNECTED queue=34 acked=176 dropped=0
+[578000 ms] wifi=UP mqtt=down state=DISCONNECTED queue=35 acked=176 dropped=0
+[579006 ms] wifi=UP mqtt=down state=DISCONNECTED queue=36 acked=176 dropped=0
+[580002 ms] wifi=UP mqtt=down state=DISCONNECTED queue=37 acked=176 dropped=0
+[580134 ms] MQTT connect started (err=0)
+[581009 ms] wifi=UP mqtt=down state=DISCONNECTED queue=38 acked=176 dropped=0
+[582005 ms] wifi=UP mqtt=down state=DISCONNECTED queue=39 acked=176 dropped=0
+[583001 ms] wifi=UP mqtt=down state=DISCONNECTED queue=40 acked=176 dropped=0
+[584007 ms] wifi=UP mqtt=down state=DISCONNECTED queue=41 acked=176 dropped=0
+[585003 ms] wifi=UP mqtt=down state=DISCONNECTED queue=42 acked=176 dropped=0
+[586009 ms] wifi=UP mqtt=down state=DISCONNECTED queue=43 acked=176 dropped=0
+[587005 ms] wifi=UP mqtt=down state=DISCONNECTED queue=44 acked=176 dropped=0
+[588001 ms] wifi=UP mqtt=down state=DISCONNECTED queue=45 acked=176 dropped=0
+[589007 ms] wifi=UP mqtt=down state=DISCONNECTED queue=46 acked=176 dropped=0
+[590003 ms] wifi=UP mqtt=down state=DISCONNECTED queue=47 acked=176 dropped=0
+[591008 ms] wifi=UP mqtt=down state=DISCONNECTED queue=48 acked=176 dropped=0
+[592004 ms] wifi=UP mqtt=down state=DISCONNECTED queue=49 acked=176 dropped=0
+[593000 ms] wifi=UP mqtt=down state=DISCONNECTED queue=50 acked=176 dropped=0
+[594006 ms] wifi=UP mqtt=down state=DISCONNECTED queue=51 acked=176 dropped=0
+[595002 ms] wifi=UP mqtt=down state=DISCONNECTED queue=52 acked=176 dropped=0
+[596008 ms] wifi=UP mqtt=down state=DISCONNECTED queue=53 acked=176 dropped=0
+[597004 ms] wifi=UP mqtt=down state=DISCONNECTED queue=54 acked=176 dropped=0
+[598000 ms] wifi=UP mqtt=down state=DISCONNECTED queue=55 acked=176 dropped=0
+[598645 ms] MQTT connect started (err=0)
+[599007 ms] wifi=UP mqtt=down state=DISCONNECTED queue=56 acked=176 dropped=0
+[600003 ms] wifi=UP mqtt=down state=DISCONNECTED queue=57 acked=176 dropped=0
+[601009 ms] wifi=UP mqtt=down state=DISCONNECTED queue=58 acked=176 dropped=0
+[602005 ms] wifi=UP mqtt=down state=DISCONNECTED queue=59 acked=176 dropped=0
+[603001 ms] wifi=UP mqtt=down state=DISCONNECTED queue=60 acked=176 dropped=0
+[604007 ms] wifi=UP mqtt=down state=DISCONNECTED queue=61 acked=176 dropped=0
+[604672 ms] MQTT status: 0 (0 = connected)
+[605000 ms] wifi=UP mqtt=UP state=SYNC queue=40 acked=198 dropped=0
+[606006 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=238 dropped=0
+[607007 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=239 dropped=0
+[608009 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=240 dropped=0
+[609000 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=241 dropped=0
+[610002 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=242 dropped=0
+[611004 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=243 dropped=0
+[612005 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=244 dropped=0
+[613006 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=245 dropped=0
+[614008 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=246 dropped=0
+[615009 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=247 dropped=0
+[616000 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=248 dropped=0
+[617002 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=249 dropped=0
+[618003 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=250 dropped=0
+[619004 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=251 dropped=0
+[620006 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=252 dropped=0
+[621008 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=253 dropped=0
+[622009 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=254 dropped=0
+[623001 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=255 dropped=0
+[624002 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=256 dropped=0
+[625003 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=257 dropped=0
+[626005 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=258 dropped=0
+[627007 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=259 dropped=0
+[628009 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=260 dropped=0
+[629000 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=261 dropped=0
+[630001 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=262 dropped=0
+[631003 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=263 dropped=0
+[632005 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=264 dropped=0
+[633006 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=265 dropped=0
+[634007 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=266 dropped=0
+[635009 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=267 dropped=0
+[636000 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=268 dropped=0
+[637001 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=269 dropped=0
+[638003 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=270 dropped=0
+[639004 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=271 dropped=0
+[640005 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=272 dropped=0
+[641007 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=273 dropped=0
+[642008 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=274 dropped=0
+[643000 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=275 dropped=0
+[644001 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=276 dropped=0
+[645003 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=277 dropped=0
+[646004 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=278 dropped=0
+[647005 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=279 dropped=0
+[648007 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=280 dropped=0
+[649008 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=281 dropped=0
+[650000 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=282 dropped=0
+[650911 ms] MQTT connect started (err=0)
+[650911 ms] MQTT status: 256 (0 = connected)
+[651004 ms] wifi=UP mqtt=down state=DISCONNECTED queue=1 acked=283 dropped=0
+[652000 ms] wifi=UP mqtt=down state=DISCONNECTED queue=2 acked=283 dropped=0
+[653008 ms] wifi=UP mqtt=down state=DISCONNECTED queue=3 acked=283 dropped=0
+[654004 ms] wifi=UP mqtt=down state=DISCONNECTED queue=4 acked=283 dropped=0
+[655000 ms] wifi=UP mqtt=down state=DISCONNECTED queue=5 acked=283 dropped=0
+[656006 ms] wifi=UP mqtt=down state=DISCONNECTED queue=6 acked=283 dropped=0
+[657002 ms] wifi=UP mqtt=down state=DISCONNECTED queue=7 acked=283 dropped=0
+[658008 ms] wifi=UP mqtt=down state=DISCONNECTED queue=8 acked=283 dropped=0
+[659004 ms] wifi=UP mqtt=down state=DISCONNECTED queue=9 acked=283 dropped=0
+[660000 ms] wifi=UP mqtt=down state=DISCONNECTED queue=10 acked=283 dropped=0
+[661006 ms] wifi=UP mqtt=down state=DISCONNECTED queue=11 acked=283 dropped=0
+[662001 ms] wifi=UP mqtt=down state=DISCONNECTED queue=12 acked=283 dropped=0
+[663007 ms] wifi=UP mqtt=down state=DISCONNECTED queue=13 acked=283 dropped=0
+[664003 ms] wifi=UP mqtt=down state=DISCONNECTED queue=14 acked=283 dropped=0
+[665009 ms] wifi=UP mqtt=down state=DISCONNECTED queue=15 acked=283 dropped=0
+[666005 ms] wifi=UP mqtt=down state=DISCONNECTED queue=16 acked=283 dropped=0
+[667001 ms] wifi=UP mqtt=down state=DISCONNECTED queue=17 acked=283 dropped=0
+[668007 ms] wifi=UP mqtt=down state=DISCONNECTED queue=18 acked=283 dropped=0
+[669003 ms] wifi=UP mqtt=down state=DISCONNECTED queue=19 acked=283 dropped=0
+[669165 ms] MQTT connect started (err=0)
+[670000 ms] wifi=UP mqtt=down state=DISCONNECTED queue=20 acked=283 dropped=0
+[671006 ms] wifi=UP mqtt=down state=DISCONNECTED queue=21 acked=283 dropped=0
+[672002 ms] wifi=UP mqtt=down state=DISCONNECTED queue=22 acked=283 dropped=0
+[673008 ms] wifi=UP mqtt=down state=DISCONNECTED queue=23 acked=283 dropped=0
+[674004 ms] wifi=UP mqtt=down state=DISCONNECTED queue=24 acked=283 dropped=0

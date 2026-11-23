@@ -1,0 +1,19 @@
+# FR-COM-02 MQTT retry: 417416 -> 422418 ms = 5002 ms. Pico W, broker stopped then restarted. No SSID/IP/password.
+
+[417416 ms] MQTT connect started (err=0)
+[417416 ms] MQTT status: 256 (0 = connected)
+[418001 ms] wifi=UP mqtt=down state=DISCONNECTED queue=1 acked=259 dropped=0
+[419007 ms] wifi=UP mqtt=down state=DISCONNECTED queue=2 acked=259 dropped=0
+[420003 ms] wifi=UP mqtt=down state=DISCONNECTED queue=3 acked=259 dropped=0
+[421009 ms] wifi=UP mqtt=down state=DISCONNECTED queue=4 acked=259 dropped=0
+[422005 ms] wifi=UP mqtt=down state=DISCONNECTED queue=5 acked=259 dropped=0
+[422418 ms] MQTT attempt timed out, retrying
+[422428 ms] MQTT connect started (err=0)
+[422449 ms] MQTT status: 0 (0 = connected)
+[423003 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=264 dropped=0
+[424005 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=265 dropped=0
+[425006 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=266 dropped=0
+[426007 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=267 dropped=0
+[427009 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=268 dropped=0
+[428000 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=269 dropped=0
+[429002 ms] wifi=UP mqtt=UP state=CONNECTED queue=1 acked=270 dropped=0

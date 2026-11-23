@@ -1,0 +1,13 @@
+[TEST] S1-U50 PASS  normal sample gives the expected message (FR-COM-07/09/13)
+[TEST] S1-U51 PASS  message is at most 256 bytes (NFR-RES-03)
+[TEST] S1-U52 PASS  worst-case values still fit in 256 bytes
+[TEST] S1-U53 PASS  negative values are written correctly
+[TEST] S1-U54 PASS  all-zero sample works
+[TEST] S1-U55 PASS  buffer with room for the end marker works
+[TEST] S1-U56 PASS  buffer one byte too small is refused
+[TEST] S1-U57 PASS  small buffer: nothing written past its end
+[TEST] S1-U58 PASS  NULL pointers and size 0 are rejected
+[TEST] S1-U59 PASS  state name with a quote is rejected
+[TEST] S1-U60 PASS  empty state name is rejected
+[TEST] S1-U61 PASS  state name without an end marker is rejected
+ALL TESTS PASSED (0 failed)

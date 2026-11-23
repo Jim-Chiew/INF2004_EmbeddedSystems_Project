@@ -1,0 +1,271 @@
+﻿[10:44:14.455] # capture started; waiting for the Pico's USB serial port
+[10:45:17.486] # connected to COM10
+[10:45:17.519] 
+[10:45:17.525] 
+[10:45:17.551] microT-Kernel Version 3.00
+[10:45:17.574] 
+[10:45:17.597] 
+[10:45:17.621] === Robo car on micro T-Kernel, Pico W (spec 0x6300, product 0x0003) built Nov 19 2026 16:48:36 ===
+[10:45:17.649] dual-core (SMP) build, usermain on core 0
+[10:45:17.678] motion: motor PWM ready (GP8-GP11, 20 kHz)
+[10:45:17.707] all subsystems started
+[10:45:17.727] 
+[10:45:17.758] wifi: cyw43_utk_task starting (proc 1)
+[10:45:17.782] wifi: cyw43_init() ...
+[10:45:17.801] imu: LSM303D found (WHO_AM_I 0x49). Press GP21 to calibrate.
+[10:45:17.826] wifi: cyw43_init() returned, bringing interface up ...
+[10:45:17.859] barcode: sampling GP28 at 2000 Hz
+[10:45:17.887] barcode: raw 0 swing 65535..0 | white 240 black 490 mid 365 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:17.908] obstacle: HC-SR04 on GP0/GP1, servo on GP15 -- the car stops 15 cm from anything ahead
+[10:45:17.950] nav: GP20/START = start/stop, GP21 = IMU calibration (car spins), RESET = clear counters
+[10:45:17.959] odom L0 R0 = 0 mm  (ENCODERS NOT RUNNING)
+[10:45:17.985] barcode: raw 248 swing 219..265 | white 239 black 335 mid 364 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:18.008] odom L0 R0 = 0 mm  (ENCODERS NOT RUNNING)
+[10:45:18.032] wifi: joining "picotest" ...
+[10:45:18.057] wifi: link status -> joined AP, waiting for IP (1)
+[10:45:18.079] [990 ms] MQTT status: -1 (0 = connected)
+[10:45:18.104] motion: encoders running on PIO0 (L GP16/GP17, R GP26/GP6)
+[10:45:18.123] [    1.01 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P   0.1 R   2.2 H 186 S  V +0.05 humps 0 max 0.00g rst 0 vib 0.023g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 2654mm | wifi DISCONNECTED (JOIN) q4 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:18.150] barcode: raw 234 swing 214..270 | white 239 black 276 mid 364 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:18.172] comms: error LEDs on GP18 (PIO0): red SAFETY, magenta MOTOR, yellow IMU, white CAL, cyan BARCODE, blue WIFI
+[10:45:18.201] odom L0 R0 = 0 mm
+[10:45:18.223] barcode: raw 249 swing 211..276 | white 239 black 263 mid 364 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:18.250] odom L0 R0 = 0 mm
+[10:45:18.280] wifi: link status -> FAILED: SSID not found (out of range, wrong name, or 5GHz-only network -- this chip is 2.4GHz only) (-2)
+[10:45:18.303] barcode: raw 233 swing 229..258 | white 240 black 251 mid 365 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:18.330] [    2.13 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.0 R   3.0 H 186 S  V +0.05 humps 0 max 0.00g rst 0 vib 0.025g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 2653mm | wifi DISCONNECTED (NONET) q5 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:18.369] odom L0 R0 = 0 mm
+[10:45:18.399] [    2.39 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -1.9 R   3.8 H 185 S  V +0.04 humps 0 max 0.00g rst 0 vib 0.023g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 2654mm | wifi DISCONNECTED (NONET) q7 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:18.428] barcode: raw 234 swing 230..253 | white 240 black 251 mid 365 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:18.457] [    2.64 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -2.5 R   2.4 H 187 S  V +0.04 humps 0 max 0.00g rst 0 vib 0.024g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 2650mm | wifi DISCONNECTED (NONET) q8 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:18.477] odom L0 R0 = 0 mm
+[10:45:18.507] [    2.90 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P   4.5 R  -1.8 H 188 S  V +0.05 humps 0 max 0.00g rst 0 vib 0.026g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 2653mm | wifi DISCONNECTED (NONET) q9 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:18.528] barcode: raw 250 swing 229..252 | white 240 black 250 mid 365 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:18.553] [    3.15 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -3.3 R   3.9 H 186 S  V +0.03 humps 0 max 0.00g rst 0 vib 0.024g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 2658mm | wifi DISCONNECTED (NONET) q11 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:18.577] odom L0 R0 = 0 mm
+[10:45:18.591] [    3.41 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -1.3 R   2.9 H 186 S  V +0.02 humps 0 max 0.00g rst 0 vib 0.023g[  376.67 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.1 R   1.6 H  93 E  V +0.05 humps 3 max 0.62g rst 0 vib 0.025g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 456mm | wifi DISCONNECTED (NONET) q100 ack 0 drop 1778 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:18.627] barcode: raw 211 swing 195..barcode: raw 215 swing 204..220 | white 210 black 219 mid 335 | on white | waiting, 0 bars/gaps, 0 noise | edges 12 passes 0 | last: 10 FAILED wrong number of bars/gaps (Code 39 needs 29, 39, 49 ...)
+[10:45:18.639] barcode:   last widths us: 4000..374000 (mean 141900, widest/narrowest 93.5)
+[10:45:18.667] barcode:   bars/gaps per pass: 10 (29 = a whole *X* code)
+[10:45:18.699] [  378.71 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.6 R   0.9 H  93 E  V +0.05 humps 3 max 0.62g rst 0 vib 0.010g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 456mm | wifi DISCONNECTED (NONET) q100 ack 0 drop 1788 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:18.727] odom L42 R1 = 1 mm
+[10:45:18.756] [  378.96 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.6 R   1.3 H  94 E  V +0.05 humps 3 max 0.62g rst 0 vib 0.009g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 456mm | wifi DISCONNECTED (NONET) q100 ack 0 drop 1790 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:18.775] barcode: raw 208 swing 204..227 | white 210 black 221 mid 335 | on white | waiting, 0 bars/gaps, 0 noise | edges 12 passes 0 | last: 10 FAILED wrong number of bars/gaps (Code 39 needs 29, 39, 49 ...)
+[10:45:18.800] barcode:   last widths us: 4000..374000 (mean 141900, widest/narrowest 93.5)
+[10:45:18.814] barcode:   bars/gaps per pass: 10 (29 = a whole *X* code)
+[10:45:18.824] [  379.22 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.7 R   0.5 H  93 E  V +0.04 humps 3 max 0.62g rst 0 vib 0.008g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 456mm | wifi DISCONNECTED (NONET) q100 ack 0 drop 1791 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:18.853] odom L42 R1 = 1 mm
+[10:45:18.884] [  379.47 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.7 R   1.1 H  94 E  V +0.05 humps 3 max 0.62g rst 0 vib 0.007g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 460mm | wifi DISCONNECTED (NONET) q100 ack 0 drop 1792 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:18.908] barcode: raw 216 swing 204..221 | white 210 black 218 mid 335 | on white | waiting, 0 bars/gaps, 0 noise | edges 12 passes 0 | last: 10 FAILED wrong number of bars/gaps (Code 39 needs 29, 39, 49 ...)
+[10:45:18.934] barcode:   last widths us: 4000..374000 (mean 141900, widest/narrowest 93.5)
+[10:45:18.958] barcode:   bars/gaps per pass: 10 (29 = a whole *X* code)
+[10:45:18.978] [  379.73 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.7 R   0.9 H  93 E  V +0.05 humps 3 max 0.62g rst 0 vib 0.006g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 462mm | wifi DISCONNECTED (NONET) q100 ack 0 drop 1793 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:19.001] odom L42 R1 = 1 mm
+[10:45:19.021] [  379.98 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.7 R   1.1 H  93 E  V +0.05 humps 3 max 0.62g rst 0 vib 0.006g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 460mm | wifi DISCONNECTED (NONET) q100 ack 0 drop 1795 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:19.053] barcode: raw 209 swing 204..224 | white 210 black 219 mid 335 | on white | waiting, 0 bars/gaps, 0 noise | edges 12 passes 0 | last: 10 FAILED wrong number of bars/gaps (Code 39 needs 29, 39, 49 ...)
+[10:45:19.079] barcode:   last widths us: 4000..374000 (mean 141900, widest/narrowest 93.5)
+[10:45:19.100] barcode:   bars/gaps per pass: 10 (29 = a whole *X* code)
+[10:45:19.126] [  380.23 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -1.0 R   0.5 H  94 E  V +0.04 humps 3 max 0.62g rst 0 vib 0.006g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 460mm | wifi DISCONNECTED (NONET) q100 ack 0 drop 1796 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:19.161] odom L42 R1 = 1 mm
+[10:45:19.322] [  380.49 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.9 R   1.1 H  93 E  V +0.04 humps 3 max 0.62g rst 0 vib 0.005g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 460mm | wifi DISCONNECTED (NONET) q100 ack 0 drop 1797 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:19.543] barcode: raw 208 swing 204..221 | white 210 black 219 mid 335 | on white | waiting, 0 bars/gaps, 0 noise | edges 12 passes 0 | last: 10 FAILED wrong number of bars/gaps (Code 39 needs 29, 39, 49 ...)
+[10:45:19.548] barcode:   last widths us: 4000..374000 (mean 141900, widest/narrowest 93.5)
+[10:45:19.579] barcode:   bars/gaps per pass: 10 (29 = a whole *X* code)
+[10:45:19.608] [  380.75 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.7 R   1.0 H  93 E  V +0.04 humps 3 max 0.62g rst 0 vib 0.005g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 456mm | wifi DISCONNECTED (NONET) q100 ack 0 drop 1799 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:19.673] odom L42 R1 = 1 mm
+[10:45:19.821] [  381.00 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.7 R   1.0 H  93 E  V +0.04 humps 3 max 0.62g rst 0 vib 0.005g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 461mm | wifi DISCONNECTED (NONET) q100 ack 0 drop 1800 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:20.048] barcode: raw 229 swing 203..235 | white 214 black 233 mid 339 | on white | waiting, 0 bars/gaps, 0 noise | edges 12 passes 0 | last: 10 FAILED wrong number of bars/gaps (Code 39 needs 29, 39, 49 ...)
+[10:45:20.051] barcode:   last widths us: 4000..374000 (mean 141900, widest/narrowest 93.5)
+[10:45:20.080] barcode:   bars/gaps per pass: 10 (29 = a whole *X* code)
+[10:45:20.104] [  381.26 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P   1.9 R   1.5 H  93 E  V +0.07 humps 3 max 0.62g rst 0 vib 0.016g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 456mm | wifi DISCONNECTED (NONET) q100 ack 0 drop 1801 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:20.162] odom L42 R1 = 1 mm
+[10:45:20.195] wifi: joining "picotest" ...
+[10:45:20.236] wifi: link status -> joined AP, waiting for IP (1)
+[10:45:20.351] [  381.51 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.4 R   0.7 H  93 E  V +0.05 humps 3 max 0.62g rst 0 vib 0.014g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 460mm | wifi DISCONNECTED (JOIN) q100 ack 0 drop 1802 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:20.543] barcode: raw 219 swing 187..250 | white 217 black 247 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 12 passes 0 | last: 10 FAILED wrong number of bars/gaps (Code 39 needs 29, 39, 49 ...)
+[10:45:20.547] barcode:   last widths us: 4000..374000 (mean 141900, widest/narrowest 93.5)
+[10:45:20.577] barcode:   bars/gaps per pass: 10 (29 = a whole *X* code)
+[10:45:20.601] [  381.77 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P   1.0 R   1.1 H  92 E  V +0.04 humps 3 max 0.62g rst 0 vib 0.013g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 456mm | wifi DISCONNECTED (JOIN) q100 ack 0 drop 1804 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:20.663] odom L42 R1 = 1 mm
+[10:45:20.849] [  382.02 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.3 R   1.1 H  93 E  V +0.05 humps 3 max 0.62g rst 0 vib 0.012g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 464mm | wifi DISCONNECTED (JOIN) q100 ack 0 drop 1805 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:20.971] wifi: link status -> FAILED: SSID not found (out of range, wrong name, or 5GHz-only network -- this chip is 2.4GHz only) (-2)
+[10:45:21.051] barcode: raw 228 swing 194..248 | white 218 black 231 mid 343 | on white | waiting, 0 bars/gaps, 0 noise | edges 12 passes 0 | last: 10 FAILED wrong number of bars/gaps (Code 39 needs 29, 39, 49 ...)
+[10:45:21.053] barcode:   last widths us: 4000..374000 (mean 141900, widest/narrowest 93.5)
+[10:45:21.083] barcode:   bars/gaps per pass: 10 (29 = a whole *X* code)
+[10:45:21.122] [  382.28 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.3 R   0.7 H  93 E  V +0.05 humps 3 max 0.62g rst 0 vib 0.010g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 461mm | wifi DISCONNECTED (NONET) q100 ack 0 drop 1806 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:21.153] odom L42 R1 = 1 mm
+[10:45:21.366] [  382.53 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.3 R   1.0 H  93 E  V +0.06 humps 3 max 0.62g rst 0 vib 0.010g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 460mm | wifi DISCONNECTED (NONET) q100 ack 0 drop 1807 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:21.553] barcode: raw 222 swing 203..232 | white 218 black 226 mid 343 | on white | waiting, 0 bars/gaps, 0 noise | edges 12 passes 0 | last: 10 FAILED wrong number of bars/gaps (Code 39 needs 29, 39, 49 ...)
+[10:45:21.553] barcode:   last widths us: 4000..374000 (mean 141900, widest/narrowest 93.5)
+[10:45:21.586] barcode:   bars/gaps per pass: 10 (29 = a whole *X* code)
+[10:45:21.617] [  382.79 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P   1.6 R   0.7 H  93 E  V +0.06 humps 3 max 0.62g rst 0 vib 0.009g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 448mm | wifi DISCONNECTED (NONET) q100 ack 0 drop 1809 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:21.649] odom L42 R1 = 1 mm
+[10:45:21.868] [  383.04 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.3 R   1.5 H  93 E  V +0.04 humps 3 max 0.62g rst 0 vib 0.022g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 451mm | wifi DISCONNECTED (NONET) q100 ack 0 drop 1810 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:22.059] barcode: raw 212 swing 211..230 | white 217 black 225 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 12 passes 0 | last: 10 FAILED wrong number of bars/gaps (Code 39 needs 29, 39, 49 ...)
+[10:45:22.062] barcode:   last widths us: 4000..374000 (mean 141900, widest/narrowest 93.5)
+[10:45:22.091] barcode:   bars/gaps per pass: 10 (29 = a whole *X* code)
+[10:45:22.120] [  383.30 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P   0.1 R   1.0 H  93 E  V +0.04 humps 3 max 0.62g rst 0 vib 0.020g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 456mm | wifi DISCONNECTED (NONET) q100 ack 0 drop 1811 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:22.142] odom L42 R1 = 1 mm
+[10:45:22.385] [  383.55 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.4 R   0.6 H  93 E  V +0.05 humps 3 max 0.62g rst 0 vib 0.018g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 448mm | wifi DISCONNECTED (NONET) q100 ack 0 drop 1813 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:22.576] barcode: raw 229 swing 210..231 | white 220 black 230 mid 345 | on white | waiting, 0 bars/gaps, 0 noise | edges 12 passes 0 | last: 10 FAILED wrong number of bars/gaps (Code 39 needs 29, 39, 49 ...)
+[10:45:22.578] barcode:   last widths us: 4000..374000 (mean 141900, widest/narrowest 93.5)
+[10:45:22.598] barcode:   bars/gaps per pass: 10 (29 = a whole *X* code)
+[10:45:22.650] [  383.81 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.9 R   1.1 H  93 E  V +0.05 humps 3 max 0.62g rst 0 vib 0.016g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 449mm | wifi DISCONNECTED (NONET) q100 ack 0 drop 1814 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:22.654] odom L42 R1 = 1 mm
+[10:45:22.902] [  384.06 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.0 R   1.1 H  93 E  V +0.05 humps 3 max 0.62g rst 0 vib 0.014g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 452mm | wifi DISCONNECTED (NONET) q100 ack 0 drop 1815 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:23.039] barcode: raw 225 swing 215..238 | white 224 black 237 mid 349 | on white | waiting, 0 bars/gaps, 0 noise | edges 12 passes 0 | last: 10 FAILED wrong number of bars/gaps (Code 39 needs 29, 39, 49 ...)
+[10:45:23.041] barcode:   last widths us: 4000..374000 (mean 141900, widest/narrowest 93.5)
+[10:45:23.076] barcode:   bars/gaps per pass: 10 (29 = a whole *X* code)
+[10:45:23.117] # port COM10 went away (Exception calling "ReadExisting" with "0" argument(s): "The port is closed.") - waiting for it to come back
+[10:45:38.032] # connected to COM10
+[10:45:38.032] 
+[10:45:38.067] 
+[10:45:38.092] microT-Kernel Version 3.00
+[10:45:38.125] 
+[10:45:38.159] 
+[10:45:38.185] === Robo car on micro T-Kernel, Pico W (spec 0x6300, product 0x0003) built Nov 20 2026 09:49:18 ===
+[10:45:38.216] dual-core (SMP) build, usermain on core 0
+[10:45:38.254] motion: motor PWM ready (GP8-GP11, 20 kHz)
+[10:45:38.288] all subsystems started
+[10:45:38.313] 
+[10:45:38.336] wifi: cyw43_utk_task starting (proc 1)
+[10:45:38.366] wifi: cyw43_init() ...
+[10:45:38.391] wifi: cyw43_init() returned, bringing interface up ...
+[10:45:38.420] imu: LSM303D found (WHO_AM_I 0x49). Press GP21 to calibrate.
+[10:45:38.444] barcode: sampling GP28 at 2000 Hz
+[10:45:38.466] barcode: raw 0 swing 65535..0 | white 218 black 468 mid 343 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:38.490] obstacle: HC-SR04 on GP0/GP1, servo on GP15 -- the car stops 15 cm from anything ahead
+[10:45:38.512] nav: GP20 = start when stopped / stop when running, GP21 = IMU calibration (car spins), RESET = clear counters
+[10:45:38.547] barcode: raw 227 swing 197..232 | white 217 black 313 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:38.574] wifi: joining "chin" ...
+[10:45:38.599] wifi: link status -> joined AP, waiting for IP (1)
+[10:45:38.621] [995 ms] MQTT status: -1 (0 = connected)
+[10:45:38.643] motion: encoders running on PIO0 (L GP16/GP17, R GP26/GP6)
+[10:45:38.668] [    1.01 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.6 R   1.1 H  94 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.023g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 460mm | wifi DISCONNECTED (JOIN) q4 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:38.690] barcode: raw 225 swing 186..246 | white 216 black 254 mid 341 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:38.712] comms: error LEDs on GP18 (PIO0): red SAFETY, magenta MOTOR, yellow IMU, white CAL, cyan BARCODE, blue WIFI
+[10:45:38.739] barcode: raw 213 swing 193..255 | white 217 black 241 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:38.764] wifi: link status -> FAILED: SSID not found (out of range, wrong name, or 5GHz-only network -- this chip is 2.4GHz only) (-2)
+[10:45:38.789] barcode: raw 211 swing 206..233 | white 217 black 228 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:38.826] [    2.13 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.1 R   1.6 H  93 E  V +0.06 humps 0 max 0.00g rst 0 vib 0.017g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 461mm | wifi DISCONNECTED (NONET) q5 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:38.862] [    2.39 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.5 R   1.1 H  93 E  V +0.04 humps 0 max 0.00g rst 0 vib 0.015g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 461mm | wifi DISCONNECTED (NONET) q7 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:38.894] barcode: raw 226 swing 208..230 | white 217 black 227 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:38.930] [    2.64 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.2 R   1.0 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.013g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 448mm | wifi DISCONNECTED (NONET) q8 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:38.966] [    2.90 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.3 R   1.0 H  93 E  V +0.04 humps 0 max 0.00g rst 0 vib 0.012g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 457mm | wifi DISCONNECTED (NONET) q9 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:39.117] barcode: raw 210 swing 209..229 | white 217 black 228 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:39.211] [    3.15 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.5 R   1.0 H  93 E  V +0.04 humps 0 max 0.00g rst 0 vib 0.011g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 453mm | wifi DISCONNECTED (NONET) q11 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:39.464] [    3.41 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.9 R   1.9 H  94 E  V +0.06 humps 0 max 0.00g rst 0 vib 0.010g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 460mm | wifi DISCONNECTED (NONET) q12 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:39.622] barcode: raw 212 swing 209..228 | white 217 black 227 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:39.717] [    3.66 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.7 R   1.2 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.009g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 461mm | wifi DISCONNECTED (NONET) q13 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:40.001] [    3.92 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.3 R   0.9 H  94 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.008g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 457mm | wifi DISCONNECTED (NONET) q14 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:40.126] barcode: raw 225 swing 209..230 | white 217 black 227 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:40.252] [    4.17 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.7 R   1.1 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.007g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 461mm | wifi DISCONNECTED (NONET) q16 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:40.500] [    4.42 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.4 R   0.9 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.006g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 465mm | wifi DISCONNECTED (NONET) q17 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:40.624] barcode: raw 212 swing 211..226 | white 217 black 225 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:40.750] [    4.68 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.5 R   1.0 H  93 E  V +0.04 humps 0 max 0.00g rst 0 vib 0.006g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 461mm | wifi DISCONNECTED (NONET) q18 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:41.018] [    4.93 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.3 R   1.0 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.005g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 460mm | wifi DISCONNECTED (NONET) q19 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:41.112] barcode: raw 220 swing 211..226 | white 217 black 225 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:41.269] [    5.19 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.5 R   1.0 H  93 E  V +0.04 humps 0 max 0.00g rst 0 vib 0.005g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 465mm | wifi DISCONNECTED (NONET) q21 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:41.507] [    5.44 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.6 R   1.0 H  93 E  V +0.04 humps 0 max 0.00g rst 0 vib 0.004g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 460mm | wifi DISCONNECTED (NONET) q22 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:41.634] barcode: raw 223 swing 211..234 | white 216 black 231 mid 341 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:41.758] [    5.70 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.7 R   1.0 H  93 E  V +0.04 humps 0 max 0.00g rst 0 vib 0.004g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 457mm | wifi DISCONNECTED (NONET) q23 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:42.010] [    5.95 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.4 R   1.1 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.004g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 456mm | wifi DISCONNECTED (NONET) q25 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:42.106] barcode: raw 214 swing 211..227 | white 217 black 224 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:42.266] [    6.21 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.7 R   1.0 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.004g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 460mm | wifi DISCONNECTED (NONET) q26 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:42.516] [    6.46 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.3 R   1.0 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.004g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 448mm | wifi DISCONNECTED (NONET) q27 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:42.642] barcode: raw 215 swing 208..227 | white 217 black 225 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:42.768] wifi: joining "chin" ...
+[10:45:42.771] [    6.71 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.6 R   1.4 H  93 E  V +0.06 humps 0 max 0.00g rst 0 vib 0.005g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 456mm | wifi DISCONNECTED (NONET) q28 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:42.845] wifi: link status -> joined AP, waiting for IP (1)
+[10:45:43.052] [    6.97 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P   2.1 R   2.4 H  93 E  V +0.09 humps 0 max 0.00g rst 0 vib 0.007g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 461mm | wifi DISCONNECTED (JOIN) q30 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:43.133] barcode: raw 211 swing 193..254 | white 217 black 238 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:43.290] [    7.22 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.0 R   0.8 H  93 E  V +0.03 humps 0 max 0.00g rst 0 vib 0.014g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 456mm | wifi DISCONNECTED (JOIN) q31 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:43.544] wifi: link status -> FAILED: SSID not found (out of range, wrong name, or 5GHz-only network -- this chip is 2.4GHz only) (-2)
+[10:45:43.547] [    7.48 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.0 R   1.0 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.015g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 457mm | wifi DISCONNECTED (NONET) q32 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:43.638] barcode: raw 211 swing 195..246 | white 217 black 231 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:43.796] [    7.73 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.7 R   1.3 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.015g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 456mm | wifi DISCONNECTED (NONET) q33 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:44.052] [    7.99 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.3 R   0.9 H  94 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.014g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 448mm | wifi DISCONNECTED (NONET) q35 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:44.131] barcode: raw 225 swing 209..229 | white 217 black 225 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:44.321] [    8.24 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.7 R   1.1 H  94 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.015g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 460mm | wifi DISCONNECTED (NONET) q36 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:44.578] [    8.50 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.5 R   1.1 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.013g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 448mm | wifi DISCONNECTED (NONET) q37 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:44.640] barcode: raw 217 swing 211..226 | white 217 black 225 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:44.829] [    8.75 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.7 R   1.0 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.012g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 452mm | wifi DISCONNECTED (NONET) q39 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:45.065] [    9.01 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.7 R   1.1 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.011g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 456mm | wifi DISCONNECTED (NONET) q40 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:45.142] barcode: raw 214 swing 211..226 | white 217 black 225 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:45.314] [    9.26 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.5 R   1.0 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.009g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 461mm | wifi DISCONNECTED (NONET) q41 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:45.567] [    9.51 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.4 R   1.1 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.008g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 460mm | wifi DISCONNECTED (NONET) q42 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:45.663] barcode: raw 216 swing 211..227 | white 217 black 225 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:45.820] [    9.77 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.8 R   0.9 H  93 E  V +0.04 humps 0 max 0.00g rst 0 vib 0.008g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 459mm | wifi DISCONNECTED (NONET) q44 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:46.073] [   10.02 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.5 R   0.9 H  94 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.007g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 448mm | wifi DISCONNECTED (NONET) q45 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:46.138] barcode: raw 225 swing 211..226 | white 217 black 225 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:46.356] [   10.28 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.5 R   1.1 H  94 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.006g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 460mm | wifi DISCONNECTED (NONET) q46 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:46.609] [   10.53 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.4 R   1.0 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.006g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 452mm | wifi DISCONNECTED (NONET) q47 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:46.641] barcode: raw 214 swing 211..227 | white 217 black 225 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:46.860] [   10.78 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.8 R   3.1 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.022g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 460mm | wifi DISCONNECTED (NONET) q49 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:47.113] [   11.04 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.6 R   1.5 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.020g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 456mm | wifi DISCONNECTED (NONET) q50 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:47.160] barcode: raw 224 swing 210..228 | white 217 black 226 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:47.366] [   11.29 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P   0.4 R   1.0 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.018g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 452mm | wifi DISCONNECTED (NONET) q51 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:47.604] [   11.55 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.7 R   1.2 H  93 E  V +0.04 humps 0 max 0.00g rst 0 vib 0.016g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 456mm | wifi DISCONNECTED (NONET) q53 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:47.665] barcode: raw 221 swing 211..228 | white 217 black 225 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:47.884] [   11.80 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.1 R   1.0 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.014g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 452mm | wifi DISCONNECTED (NONET) q54 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:48.138] [   12.06 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.2 R  -4.2 H  93 E  V -0.03 humps 0 max 0.00g rst 0 vib 0.016g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 456mm | wifi DISCONNECTED (NONET) q55 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:48.170] barcode: raw 221 swing 211..226 | white 216 black 225 mid 341 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:48.390] [   12.31 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.9 R   1.0 H  93 E  V +0.04 humps 0 max 0.00g rst 0 vib 0.020g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 461mm | wifi DISCONNECTED (NONET) q56 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:48.546] wifi: joining "chin" ...
+[10:45:48.609] wifi: link status -> joined AP, waiting for IP (1)
+[10:45:48.655] [   12.56 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -1.4 R   1.2 H  93 E  V +0.03 humps 0 max 0.00g rst 0 vib 0.018g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 448mm | wifi DISCONNECTED (JOIN) q58 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:48.657] barcode: raw 222 swing 190..256 | white 217 black 250 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:48.875] [   12.82 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.3 R   0.8 H  93 E  V +0.04 humps 0 max 0.00g rst 0 vib 0.017g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 456mm | wifi DISCONNECTED (JOIN) q59 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:49.127] [   13.07 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.9 R   1.4 H  93 E  V +0.03 humps 0 max 0.00g rst 0 vib 0.015g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 456mm | wifi DISCONNECTED (JOIN) q60 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:49.176] barcode: raw 210 swing 193..248 | white 217 black 238 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:49.316] wifi: link status -> FAILED: SSID not found (out of range, wrong name, or 5GHz-only network -- this chip is 2.4GHz only) (-2)
+[10:45:49.393] [   13.33 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.1 R   1.3 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.014g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 456mm | wifi DISCONNECTED (NONET) q61 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:49.645] [   13.58 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.3 R   0.2 H  93 E  V +0.04 humps 0 max 0.00g rst 0 vib 0.015g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 452mm | wifi DISCONNECTED (NONET) q63 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:49.678] barcode: raw 214 swing 205..246 | white 217 black 232 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:49.899] [   13.83 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.3 R   0.8 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.015g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 452mm | wifi DISCONNECTED (NONET) q64 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:50.149] [   14.09 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.4 R   0.6 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.013g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 457mm | wifi DISCONNECTED (NONET) q65 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:50.180] barcode: raw 221 swing 211..226 | white 217 black 225 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:50.400] [   14.34 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P   0.1 R   0.6 H  94 E  V +0.06 humps 0 max 0.00g rst 0 vib 0.012g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 452mm | wifi DISCONNECTED (NONET) q67 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:50.683] [   14.60 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.3 R   0.5 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.011g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 456mm | wifi DISCONNECTED (NONET) q68 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:50.686] barcode: raw 218 swing 210..226 | white 217 black 225 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:50.930] [   14.85 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.8 R   1.5 H  93 E  V +0.04 humps 0 max 0.00g rst 0 vib 0.010g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 460mm | wifi DISCONNECTED (NONET) q69 ack 0 drop 0 cmd 0/0 bc-pub 0 | err -
+[10:45:51.182] [   15.11 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P   0.0 R   1.2 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.009g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 448mm | wifi DISCONNECTED (NONET) q70 ack 0 drop 0 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:51.188] barcode: raw 213 swing 211..227 | white 216 black 226 mid 341 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:51.430] [   15.36 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.7 R   1.1 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.008g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 460mm | wifi DISCONNECTED (NONET) q72 ack 0 drop 0 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:51.678] [   15.62 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.8 R   1.2 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.008g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 456mm | wifi DISCONNECTED (NONET) q73 ack 0 drop 0 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:51.680] barcode: raw 212 swing 210..231 | white 217 black 230 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:51.934] [   15.87 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.6 R   1.2 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.007g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 460mm | wifi DISCONNECTED (NONET) q74 ack 0 drop 0 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:52.187] barcode: raw 225 swing 211..227 | white 217 black 225 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:52.189] [   16.12 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.4 R   1.0 H  93 E  V +0.04 humps 0 max 0.00g rst 0 vib 0.006g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 460mm | wifi DISCONNECTED (NONET) q75 ack 0 drop 0 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:52.437] [   16.38 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.5 R   1.1 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.006g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 452mm | wifi DISCONNECTED (NONET) q77 ack 0 drop 0 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:52.688] barcode: raw 217 swing 210..229 | white 217 black 226 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:52.690] [   16.63 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.5 R   1.2 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.006g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 460mm | wifi DISCONNECTED (NONET) q78 ack 0 drop 0 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:52.971] [   16.89 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  10.4 R   1.8 H  93 E  V +0.07 humps 0 max 0.00g rst 0 vib 0.018g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 448mm | wifi DISCONNECTED (NONET) q79 ack 0 drop 0 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:53.176] barcode: raw 213 swing 210..234 | white 217 black 232 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:53.223] [   17.14 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.6 R   1.1 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.016g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 447mm | wifi DISCONNECTED (NONET) q80 ack 0 drop 0 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:53.477] [   17.40 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P -22.0 R   4.2 H  92 E  V +0.06 humps 0 max 0.00g rst 0 vib 0.015g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 452mm | wifi DISCONNECTED (NONET) q82 ack 0 drop 0 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:53.698] barcode: raw 220 swing 207..230 | white 215 black 224 mid 340 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:53.730] [   17.65 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.8 R   1.7 H  93 E  V +0.06 humps 0 max 0.00g rst 0 vib 0.016g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 447mm | wifi DISCONNECTED (NONET) q83 ack 0 drop 0 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:53.984] [   17.90 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.1 R   0.8 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.014g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 448mm | wifi DISCONNECTED (NONET) q84 ack 0 drop 0 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:54.207] barcode: raw 216 swing 209..232 | white 217 black 226 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:54.254] [   18.16 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P   0.1 R   1.1 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.013g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 460mm | wifi DISCONNECTED (NONET) q86 ack 0 drop 0 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:54.300] wifi: joining "chin" ...
+[10:45:54.346] wifi: link status -> joined AP, waiting for IP (1)
+[10:45:54.488] [   18.41 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.3 R   0.9 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.011g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 456mm | wifi DISCONNECTED (JOIN) q87 ack 0 drop 0 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:54.726] barcode: raw 211 swing 192..253 | white 217 black 245 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:54.728] [   18.67 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.4 R   1.4 H  93 E  V +0.04 humps 0 max 0.00g rst 0 vib 0.011g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 448mm | wifi DISCONNECTED (JOIN) q88 ack 0 drop 0 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:54.996] [   18.92 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.1 R   0.9 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.010g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 452mm | wifi DISCONNECTED (JOIN) q89 ack 0 drop 0 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:55.061] wifi: link status -> FAILED: SSID not found (out of range, wrong name, or 5GHz-only network -- this chip is 2.4GHz only) (-2)
+[10:45:55.189] barcode: raw 224 swing 194..249 | white 217 black 244 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:55.250] [   19.18 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P   2.8 R   6.8 H  94 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.009g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 455mm | wifi DISCONNECTED (NONET) q91 ack 0 drop 0 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:55.487] [   19.43 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.5 R   1.1 H  94 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.009g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 460mm | wifi DISCONNECTED (NONET) q92 ack 0 drop 0 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:55.696] barcode: raw 220 swing 201..232 | white 217 black 229 mid 342 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:55.758] [   19.68 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.6 R   0.8 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.008g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 459mm | wifi DISCONNECTED (NONET) q93 ack 0 drop 0 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:56.013] [   19.94 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -1.3 R   1.6 H  93 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.020g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 455mm | wifi DISCONNECTED (NONET) q94 ack 0 drop 0 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:56.202] barcode: raw 221 swing 211..228 | white 218 black 227 mid 343 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:56.262] [   20.19 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.4 R   0.8 H  94 E  V +0.05 humps 0 max 0.00g rst 0 vib 0.019g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 446mm | wifi DISCONNECTED (NONET) q96 ack 0 drop 0 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:56.517] [   20.45 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P   0.3 R   3.7 H  94 E  V +0.04 humps 0 max 0.00g rst 0 vib 0.017g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 446mm | wifi DISCONNECTED (NONET) q97 ack 0 drop 0 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:56.706] barcode: raw 225 swing 211..230 | white 218 black 227 mid 343 | on white | waiting, 0 bars/gaps, 0 noise | edges 0 passes 0 | last: 0 none
+[10:45:56.754] [   20.70 s] IDLE (no cal)   | IR L0 R0 FOLLOW   jn 0 | spd  0.0 cm/s STOPPED pwr L0 R0 | IMU P  -0.6 R   1.8 H  94 E  V +0.04 humps 0 max 0.00g rst 0 vib 0.017g lift - 0.0cm (last 0.0cm 0.00m/s) | bc - | us 447mm | wifi DISCONNECTED (NONET) q98 ack 0 drop 0 cmd 0/0 bc-pub 0 | err WIFI
+[10:45:56.932] # port COM10 went away (Exception calling "ReadExisting" with "0" argument(s): "The port is closed.") - waiting for it to come back
+[11:24:15.438] # timed out after 40 min
