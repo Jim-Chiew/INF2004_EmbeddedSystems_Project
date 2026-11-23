@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Decode Buddy 1 telemetry frames (9 bytes) on the laptop.
+"""Decode Buddy 1 telemetry frames (10 bytes, version 2) on the laptop.
 Written separately from the C code, from the table in data_layout.h, so it also checks it.
 
 Live:   pip install paho-mqtt     (once)
@@ -17,21 +17,26 @@ STATES = ["CALIBRATE", "LINE_FOLLOWING", "LINE_LOST", "BARCODE_EXECUTION",
 F = [("state", 0, 3), ("error", 3, 1), ("wifi_loss", 4, 1), ("low_batt", 5, 1), ("drop", 6, 1),
      ("hump", 7, 1), ("speed", 8, 6), ("bc_dir", 14, 2), ("bc_err", 16, 1), ("line", 17, 2),
      ("dist", 19, 6), ("dir", 25, 9), ("hump_jolt", 34, 8), ("tilt", 42, 9), ("roll", 51, 9),
-     ("seq", 60, 4)]
+     ("seq", 60, 4), ("obj_len", 64, 6)]
 INVALID = {"speed": 63, "dist": 63, "dir": 511, "hump_jolt": 255, "tilt": 511, "roll": 511}
+NONE = {"obj_len": 63}        # DL_OBJ_NONE: nothing measured yet (0 cm is a real answer)
+VERSION, FRAME_BYTES = 2, 10  # data_layout.h DL_VERSION / DL_FRAME_BYTES
 
 
 def decode(frame: bytes):
-    if len(frame) != 9:
-        raise ValueError("frame is %d bytes, expected 9" % len(frame))
-    if frame[0] != 1:
-        raise ValueError("unknown version byte %d" % frame[0])
+    if len(frame) != FRAME_BYTES:
+        raise ValueError("frame is %d bytes, expected %d" % (len(frame), FRAME_BYTES))
+    if frame[0] != VERSION:
+        raise ValueError("unknown version byte %d, expected %d" % (frame[0], VERSION))
     w = int.from_bytes(frame[1:], "little")
     v = {n: (w >> s) & ((1 << b) - 1) for n, s, b in F}
     out = dict(v)
     for k, bad in INVALID.items():
         if v[k] == bad:
             out[k] = "invalid"
+    for k, none in NONE.items():
+        if v[k] == none:
+            out[k] = "none"
     for k in ("tilt", "roll"):
         if out[k] != "invalid":
             out[k] = v[k] - 180
@@ -45,13 +50,13 @@ def show(frame):
 
 
 def selftest():
-    a = bytes([0x01, 0x01, 0x19, 0x00, 0xB5, 0x00, 0xD0, 0xA2, 0x05])
-    b = bytes([0x01, 0xFF, 0xBE, 0xF7, 0xCF, 0x02, 0xA2, 0x05, 0xF0])
+    a = bytes([0x02, 0x01, 0x19, 0x00, 0xB5, 0x00, 0xD0, 0xA2, 0x05, 0x3F])
+    b = bytes([0x02, 0xFF, 0xBE, 0xF7, 0xCF, 0x02, 0xA2, 0x05, 0xF0, 0x3E])
     da, db = decode(a), decode(b)
-    assert (da["state"], da["speed"], da["dist"], da["dir"], da["tilt"], da["roll"], da["seq"]) == \
-        ("LINE_FOLLOWING", 25, 32, 90, 0, 0, 0), da
-    assert (db["state"], db["speed"], db["dist"], db["dir"], db["hump_jolt"], db["tilt"], db["roll"], db["seq"]) == \
-        ("FAULT_STOP", 62, 62, 359, 128, 180, -180, 15), db
+    assert (da["state"], da["speed"], da["dist"], da["dir"], da["tilt"], da["roll"], da["seq"], da["obj_len"]) == \
+        ("LINE_FOLLOWING", 25, 32, 90, 0, 0, 0, "none"), da
+    assert (db["state"], db["speed"], db["dist"], db["dir"], db["hump_jolt"], db["tilt"], db["roll"], db["seq"], db["obj_len"]) == \
+        ("FAULT_STOP", 62, 62, 359, 128, 180, -180, 15, 62), db
     print("selftest PASS (same two known frames as test_telemetry.c)")
 
 

@@ -24,7 +24,7 @@ The car program app_program/main/line_follow_imu.c uses it through comms_link.h 
 
 3. MQTT topics
 Topic	Direction	QoS	Content
-robocar/car1/telemetry	car -> broker	1	one JSON telemetry message per second
+robocar/car1/telemetry	car -> broker	1	one 10-byte binary frame every S1_TELEMETRY_MS (200 ms, 5 a second): 1 version byte + 9 payload bytes of bit fields, layout in data_layout.h. S1_PUBLISH_TELEMETRY 1. (Sections 2 and 4 below still describe the older JSON message this replaced.)
 robocar/car1/cmd	broker -> car	1	plain text command
 robocar/car1/barcode	car -> broker	1	decoded barcode text, plain ASCII without the *s, then a space and the direction that code commands: "A LEFT", "B RIGHT", "S FORWARD", or "X NONE" when it commands nothing. Once per barcode read (comms_send_barcode), up to COMMS_BARCODE_MAX (20) characters
 
@@ -34,7 +34,7 @@ robocar/car1/hump	car -> broker	1	one message per hump a wheel rolls over, durin
 
 Topic names are #defines at the top of comms.h. Change them there only.
 
-What the car actually publishes is set in subsystem1.h. As set, it sends EVENTS only: each decoded barcode on robocar/car1/barcode ("A LEFT"), and each obstacle it stops for on robocar/car1/obstacle ("d=142 w=184 n=133 l=10 r=-25 s=L", format in comms.h; S1_PUBLISH_OBSTACLE 1). The continuous telemetry frames are off (S1_PUBLISH_TELEMETRY 0; set it to 1 for robocar/car1/telemetry, 5 a second). The car still receives commands on robocar/car1/cmd.
+What the car actually publishes is set in subsystem1.h. As set, it sends the continuous telemetry frame AND the events: each decoded barcode on robocar/car1/barcode ("A LEFT"), and each obstacle it stops for on robocar/car1/obstacle ("d=142 w=184 n=133 l=10 r=-25 s=L", format in comms.h; S1_PUBLISH_OBSTACLE 1). The continuous telemetry frames are on as well (S1_PUBLISH_TELEMETRY 1: one 10-byte frame on robocar/car1/telemetry every S1_TELEMETRY_MS, 5 a second; set it to 0 for events only). The car still receives commands on robocar/car1/cmd.
 
 4. Telemetry message (car -> broker)
 

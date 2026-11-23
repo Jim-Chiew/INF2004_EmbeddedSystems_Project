@@ -15,7 +15,8 @@ extra Python packages are needed.
 Options: --host (default 192.168.137.1), --port (default 1883).
 
 The frame layout is app_program/subsystem1/data_layout.h: 1 version byte, then
-one 64-bit word sent little-endian. Keep FIELDS below in step with that file.
+9 payload bytes of bit fields, sent little-endian. Keep FIELDS below in step with
+that file.
 
 gui reads with the paho library if it is installed (pip install paho-mqtt), which is the
 most reliable on Windows, and otherwise with mosquitto_sub like watch does.
@@ -50,15 +51,17 @@ FIELDS = {
     "drop": (6, 1), "hump": (7, 1), "speed": (8, 6), "bc_dir": (14, 2),
     "bc_err": (16, 1), "line": (17, 2), "dist": (19, 6), "dir": (25, 9),
     "hump_h": (34, 8), "tilt": (42, 9), "roll": (51, 9), "seq": (60, 4),
+    "obj_len": (64, 6),
 }
 STATES = ["CALIBRATE", "LINE_FOLLOWING", "LINE_LOST", "BARCODE_EXECUTION",
           "LINE_SEARCH", "OBSTACLE_AVOIDANCE", "BARCODE_RESCAN", "FAULT_STOP"]
-BC_DIRS = ["-", "LEFT", "RIGHT", "spare(3)"]
+BC_DIRS = ["-", "LEFT", "RIGHT", "FORWARD"]  # data_layout.h DL_BC_*; U-turn goes out as "-"
 LINES = ["centred", "drift-right", "drift-left", "crossing"]
 COMMANDS = {"start": 1, "stop": 2, "reset": 3}
 COMMAND_NAMES = {v: k.upper() for k, v in COMMANDS.items()}
 
 SPEED_INVALID, DIST_INVALID, DIR_INVALID, HUMP_H_INVALID, ANGLE_INVALID = 63, 63, 511, 255, 511
+OBJ_NONE = 63       # DL_OBJ_NONE: no object measured yet (0 cm is a real answer)
 ANGLE_OFFSET = 180
 JOLT_STEP_G = 0.02  # data_layout.h DL_HUMP_JOLT_STEP_MG = 20
 JOLT_MAX = 128      # DL_HUMP_H_MAX_MM (now jolt steps)
@@ -93,11 +96,51 @@ def describe(f: dict) -> str:
     else:
         jolt = f"{'>=' if j >= JOLT_MAX else ''}{j * JOLT_STEP_G:.2f} g"
 
+    obj = "none yet" if f.get("obj_len", OBJ_NONE) == OBJ_NONE else f"{f['obj_len']} cm"
+
     flags = [n for n in ("error", "wifi_loss", "low_batt", "drop", "hump", "bc_err") if f[n]]
     return (f"#{f['seq']:<2} {STATES[f['state']]:<15} | speed {speed:<9} | line {LINES[f['line']]:<11} | "
             f"heading {heading:<10} | tilt {angle(f['tilt']):>5} roll {angle(f['roll']):>5} | "
-            f"barcode {BC_DIRS[f['bc_dir']]:<5} | obstacle {dist} | hump jolt {jolt:<8} | "
-            f"flags {' '.join(flags).upper() if flags else '-'}")
+            f"barcode {BC_DIRS[f['bc_dir']]:<5} | obstacle {dist} | object {obj:<8} | "
+            f"hump jolt {jolt:<8} | flags {' '.join(flags).upper() if flags else '-'}")
+
+
+FLAG_NAMES = ("error", "wifi_loss", "low_batt", "drop", "hump", "bc_err")
+SPEED_MAX, DIST_MAX, OBJ_MAX = 62, 62, 62   # DL_*_MAX_CMS / _CM, for the dashboard's bars
+
+
+def summary(f: dict) -> dict:
+    """One frame as values a dashboard can show straight away.
+
+    A number where the car sent a real measurement, None where it sent the
+    field's "invalid" code (no sensor, nothing in range, not calibrated yet),
+    and a word for each coded field. Units: speed cm/s, heading/tilt/roll
+    degrees, dist/obj_len cm, jolt g.
+    """
+    heading = None if f["dir"] == DIR_INVALID else f["dir"]
+    jolt_steps = f["hump_h"]
+    obj = f.get("obj_len", OBJ_NONE)
+    return {
+        "seq": f["seq"],
+        "state": STATES[f["state"]],
+        "state_code": f["state"],
+        "run": run_state(f)[0],
+        "speed": None if f["speed"] == SPEED_INVALID else f["speed"],
+        "speed_max": SPEED_MAX,
+        "heading": heading,
+        "compass": None if heading is None else compass(heading),
+        "line": LINES[f["line"]],
+        "dist": None if f["dist"] == DIST_INVALID else f["dist"],
+        "dist_max": DIST_MAX,
+        "obj_len": None if obj == OBJ_NONE else obj,
+        "obj_max": OBJ_MAX,
+        "tilt": None if f["tilt"] == ANGLE_INVALID else f["tilt"] - ANGLE_OFFSET,
+        "roll": None if f["roll"] == ANGLE_INVALID else f["roll"] - ANGLE_OFFSET,
+        "jolt": None if jolt_steps == HUMP_H_INVALID else round(jolt_steps * JOLT_STEP_G, 2),
+        "jolt_capped": jolt_steps != HUMP_H_INVALID and jolt_steps >= JOLT_MAX,
+        "bc_dir": BC_DIRS[f["bc_dir"]],
+        "flags": {n: bool(f[n]) for n in FLAG_NAMES},
+    }
 
 
 def describe_barcode(data: bytes):
@@ -107,9 +150,14 @@ def describe_barcode(data: bytes):
     return (code, direction) if code else (text, "")
 
 
+def parse_fields(data: bytes) -> dict:
+    """A "k=v k=v" message (hump, obstacle) as {"k": "v", ...}, values left as text."""
+    return dict(p.partition("=")[::2] for p in data.decode("ascii", errors="replace").split())
+
+
 def parse_hump(data: bytes) -> dict:
     """A hump message ("h=12 s=R t=5.7", comms.h) as {"h": "12", "s": "R", "t": "5.7"}."""
-    return dict(p.partition("=")[::2] for p in data.decode("ascii", errors="replace").split())
+    return parse_fields(data)
 
 
 def describe_hump(data: bytes) -> str:
@@ -121,10 +169,7 @@ def describe_hump(data: bytes) -> str:
 
 def describe_obstacle(data: bytes) -> str:
     """An obstacle message ("d=142 w=184 n=133 l=10 r=-25 s=L", comms.h) as a readable line."""
-    fields = {}
-    for part in data.decode("ascii", errors="replace").split():
-        key, _, value = part.partition("=")
-        fields[key] = value
+    fields = parse_fields(data)
     side = {"L": "left", "R": "right"}.get(fields.get("s", ""), "?")
     stopped = f"OBSTACLE {fields['d']} mm ahead" if "d" in fields else "OBSTACLE"
     if fields.get("w", "none") == "none":

@@ -37,12 +37,12 @@
      S1_PUBLISH_OBSTACLE   1 = one line per obstacle the car stops for, on
                                robocar/car1/obstacle, once subsystem 6 has
                                scanned it: "d=142 w=184 n=133 ... s=L"
-   As set: events only -- each barcode read and each obstacle, nothing
-   continuous.  Everything else is unchanged -- the frame is still built (so
-   the error lights and the USB status line work as before), commands from
-   the broker (START / STOP / RESET) are still received, and setting
-   S1_PUBLISH_TELEMETRY back to 1 restores the frames. */
-#define S1_PUBLISH_TELEMETRY	0
+   As set: BOTH are on -- the continuous telemetry frame 5 times a second,
+   plus each barcode read and each obstacle.  Setting S1_PUBLISH_TELEMETRY
+   back to 0 leaves the events only; either way the frame is still built (so
+   the error lights and the USB status line work the same), and commands from
+   the broker (START / STOP / RESET) are received in every build. */
+#define S1_PUBLISH_TELEMETRY	1
 #define S1_PUBLISH_OBSTACLE	1
 
 /* 1 = one line per hump a wheel rolls over, on robocar/car1/hump:

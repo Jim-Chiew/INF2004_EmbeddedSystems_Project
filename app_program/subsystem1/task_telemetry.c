@@ -17,8 +17,8 @@
  *	    short lower beep (beeper.h)
  *	Every S1_TELEMETRY_MS (200 ms): one 10-byte frame to
  *	robocar/car1/telemetry (layout in data_layout.h) -- built every time,
- *	but only PUBLISHED with S1_PUBLISH_TELEMETRY 1 (subsystem1.h; 0 by
- *	default, so the broker sees the barcode letters only).  Every field comes
+ *	and PUBLISHED while S1_PUBLISH_TELEMETRY is 1 (subsystem1.h; 1 as set,
+ *	so the broker gets the frames as well as the events).  Every field comes
  *	from a sensor; fields this car has no sensor for are sent as their
  *	"invalid" code:
  *	  state      CALIBRATE (stopped / calibrating) or LINE_FOLLOWING (S3)
